@@ -1,6 +1,6 @@
 {
   "root": true,
-  "extends": ["prettier", "prettier/react"],
+  "extends": ["prettier", "prettier/react", "eslint:recommended"],
   "rules": {
     "semi": 0
   }

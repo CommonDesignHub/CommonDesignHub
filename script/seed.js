@@ -13,6 +13,54 @@ async function seed() {
   ])
 
   console.log(`seeded ${users.length} users`)
+
+  const categories = await Promise.all([
+  	Category.create({category_name: "Home Appliance"}),
+  	Category.create({category_name: "Automotive"}),
+  	Category.create({category_name: "Electronics"}),
+  	Category.create({category_name: "Furniture"}),
+  	Category.create({category_name: "Tools"})
+  ])
+
+  console.log('seeded categories')
+
+  // const subcategories = await Promise.all([
+  // 	Subcategory.create({subcategory_name: "Kitchen", category_id: home_app.id})
+  // 	Subcategory.create({subcategory_name: "Bathroom", category_id: home_app.id})
+  // 	Subcategory.create({subcategory_name: "Office", category_id: home_app.id})
+  // ])
+
+  // const projects = await Promise.all([
+  // 	Project.create()
+  // 	Project.create()
+  // 	Project.create()
+  // ])
+
+  // const intiatives = await Promise.all([
+  // 	Initiative.create()
+  // 	Initiative.create()
+  // 	Initiative.create()
+  // ])
+
+  // const comments = await Promise.all([
+  // 	Comment.create()
+  // 	Comment.create()
+  // 	Comment.create()
+  // 	Comment.create()
+  // 	Comment.create()
+  // 	Comment.create()
+  // 	Comment.create()
+  // 	Comment.create()
+  // 	Comment.create()
+  // 	Comment.create()
+  // ])
+
+  // const Path = await Promise.all([
+  // 	Path.create()
+  // 	Path.create()
+
+  // ])
+
   console.log(`seeded successfully`)
 }
 
