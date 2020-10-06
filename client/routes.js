@@ -25,7 +25,7 @@ class Routes extends Component {
         {/* Routes placed here are available to all visitors */}
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route path="/catalog" component={Catalog} />
+        <Route path="/catalog" render={ (props) => (<Catalog categories={this.props.categories} c_loader={this.props.categories_loader} c_error={this.props.categories_error}/>) }/>
         <Route path="/fileupload" component={FileUpload} />
         <Route path="/create-project" component={CreateProject} />
         <Route path="/create-initiative" component={CreateInitiative} />

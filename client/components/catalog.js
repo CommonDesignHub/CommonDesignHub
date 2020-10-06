@@ -11,7 +11,14 @@ class Catalog extends Component {
   render() {
     return (
       <div>
-      	<h3>Not yet a catalog</h3>
+      	{this.props.c_loader?<h3>Loading Catalogs</h3>:null}
+      	{this.props.categories.length?
+      		<ul>
+	      		{this.props.categories.map((category)=>{
+	      			return <li>{category.title}</li>
+	      		})}
+      		</ul>
+      		:null}
       </div>
     )
   }

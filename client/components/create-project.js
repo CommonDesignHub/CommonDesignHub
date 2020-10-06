@@ -14,9 +14,9 @@ class CreateProject extends Component {
       	<h3>Create a project here</h3>
 
       	<form>
-      	  <label for="pname">Project name:</label><br/>
+      	  <label htmlFor="pname">Project name:</label><br/>
       		<input type="text" id="" name="Name"/>
-      	  <label for="repo-url">Repository URL</label><br/>
+      	  <label htmlFor="repo-url">Repository URL</label><br/>
       		<input type="text" id="" name="url"/>      		
       	</form>
       </div>

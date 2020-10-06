@@ -1,11 +1,11 @@
 const router = require('express').Router()
-const {Category} = require('../db/models')
+const {Category, Item} = require('../db/models')
 
 module.exports = router
 
 router.get('/', async (req, res, next) => {
   try {
-    const categories = await Category.findAll()
+    const categories = await Category.findAll({include: Item})
     res.json(categories)
   } catch (err) {
     next(err)
