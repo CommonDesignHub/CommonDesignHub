@@ -19,6 +19,12 @@ class CreateProject extends Component {
       	  <label htmlFor="repo-url">Repository URL</label><br/>
       		<input type="text" id="" name="url"/>      		
       	</form>
+      	<div>upload a few images</div>
+      	<div>description</div>
+      	<div>where does it fall on tree?</div>
+      	<div>create a project</div>
+      	<div>create a project</div>
+
       </div>
     )
   }

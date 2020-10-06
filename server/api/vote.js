@@ -24,7 +24,7 @@ router.post('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
 	var id_param = req.params.id
   try {
-    const votes = await Vote.findOne(id_param)
+    const votes = await Vote.findByPk(id_param)
     res.json(votes)
   } catch (err) {
     next(err)
@@ -34,7 +34,7 @@ router.get('/:id', async (req, res, next) => {
 router.put('/:id', async (req, res, next) => {
 	var id_param = req.params.id
   try {
-    const votes = await Vote.findOne(id_param)
+    const votes = await Vote.findByPk(id_param)
     await votes.update(req.body)
     res.json(votes)
   } catch (err) {
@@ -45,7 +45,7 @@ router.put('/:id', async (req, res, next) => {
 router.delete('/:id', async (req, res, next) => {
 	var id_param = req.params.id
   try {
-    const votes = await Vote.findOne(id_param)
+    const votes = await Vote.findByPk(id_param)
     var ret = await votes.destroy()
     res.json(ret)
   } catch (err) {

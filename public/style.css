@@ -1,5 +1,10 @@
 body {
-  font-family: sans-serif;
+  font-family: BlinkMacSystemFont, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, Arial, clean, sans-serif;
+  margin: 0 auto;
+  width: 95%;
+  max-width: 600px;
+  font-size: 12pt;
+  line-height: 1.5em;
 }
 
 a {
@@ -18,4 +23,8 @@ nav a {
 form div {
   margin: 1em;
   display: inline-block;
+}
+
+.hidden {
+	display: none;
 }

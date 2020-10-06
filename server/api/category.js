@@ -24,7 +24,7 @@ router.post('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
 	var id_param = req.params.id
   try {
-    const category = await Category.findOne(id_param)
+    const category = await Category.findByPk(id_param)
     res.json(category)
   } catch (err) {
     next(err)
@@ -34,7 +34,7 @@ router.get('/:id', async (req, res, next) => {
 router.put('/:id', async (req, res, next) => {
 	var id_param = req.params.id
   try {
-    const category = await Category.findOne(id_param)
+    const category = await Category.findByPk(id_param)
     await category.update(req.body)
     res.json(category)
   } catch (err) {
@@ -45,7 +45,7 @@ router.put('/:id', async (req, res, next) => {
 router.delete('/:id', async (req, res, next) => {
 	var id_param = req.params.id
   try {
-    const category = await Category.findOne(id_param)
+    const category = await Category.findByPk(id_param)
     var ret = await category.destroy()
     res.json(ret)
   } catch (err) {

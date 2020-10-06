@@ -8,6 +8,7 @@ import FileUpload from './components/file-upload'
 import CreateProject from './components/create-project'
 import CreateInitiative from './components/create-initiative'
 import Catalog from './components/catalog'
+import Projects from './components/projects'
 
 /**
  * COMPONENT
@@ -26,6 +27,7 @@ class Routes extends Component {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/catalog" render={ (props) => (<Catalog categories={this.props.categories} c_loader={this.props.categories_loader} c_error={this.props.categories_error}/>) }/>
+        <Route path="/items/:id" component={Projects}/>
         <Route path="/fileupload" component={FileUpload} />
         <Route path="/create-project" component={CreateProject} />
         <Route path="/create-initiative" component={CreateInitiative} />
