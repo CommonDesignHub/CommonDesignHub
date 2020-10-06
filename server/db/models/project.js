@@ -1,12 +1,14 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 
-const Project = db.define('project', {
+module.exports = db.define('project', {
   title: {
     type: Sequelize.STRING,
     unique: true,
     allowNull: false
+  },
+  version_control_url: {
+    type: Sequelize.STRING,
+    allowNull: false
   }
 })
-
-module.exports = Project

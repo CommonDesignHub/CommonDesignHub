@@ -1,12 +1,13 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 
-const Item = db.define('item', {
+module.exports = db.define('item', {
   title: {
     type: Sequelize.STRING,
     unique: true,
     allowNull: false
+  },
+  description: {
+    type: Sequelize.TEXT,
   }
 })
-
-module.exports = Item

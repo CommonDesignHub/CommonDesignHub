@@ -5,6 +5,10 @@ import PropTypes from 'prop-types'
 import {Login, Signup, UserHome} from './components'
 import {me} from './store'
 import FileUpload from './components/file-upload'
+import CreateProject from './components/create-project'
+import CreateInitiative from './components/create-initiative'
+import Catalog from './components/catalog'
+
 /**
  * COMPONENT
  */
@@ -21,7 +25,10 @@ class Routes extends Component {
         {/* Routes placed here are available to all visitors */}
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
+        <Route path="/catalog" component={Catalog} />
         <Route path="/fileupload" component={FileUpload} />
+        <Route path="/create-project" component={CreateProject} />
+        <Route path="/create-initiative" component={CreateInitiative} />
 
         {isLoggedIn && (
           <Switch>

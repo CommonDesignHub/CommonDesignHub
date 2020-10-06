@@ -42,8 +42,8 @@ class FileUpload extends Component {
 
   render() {
     return (
-      <div className="App">
-        <h1>BOILERMAKER</h1>
+      <div>
+        <h1>TEST</h1>
 
         <form onSubmit={this.onSubmit}>
           <input
