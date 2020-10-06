@@ -10,5 +10,8 @@ module.exports = db.define('project', {
   version_control_url: {
     type: Sequelize.STRING,
     allowNull: false
+  },
+  description: {
+  	type: Sequelize.TEXT,
   }
 })

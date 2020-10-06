@@ -14,25 +14,21 @@ ItemCategory = db.define('item_category')
  *
  *    ex. BlogPost.belongsTo(User)
  */
-Category.hasMany(Item)
+
+Category.belongsToMany(Item, {through: ItemCategory})
 Item.belongsToMany(Category, {through: ItemCategory})
 
 User.hasMany(Comment)
 Comment.belongsTo(User)
-// Initiative.hasMany(Comment)
-// Comment.belongsTo(Initiative)
+
 Project.hasMany(Comment)
 Comment.belongsTo(Project)
 
 Project.belongsTo(Item)
-// Initiative.belongsTo(Item)
-// Item.hasOne(Initiative)
 Item.hasMany(Project)
 
 User.hasMany(Project)
-// User.hasMany(Initiative)
 Project.belongsTo(User)
-// Initiative.belongsTo(User)
 
 Vote.belongsTo(Project)
 Vote.belongsTo(User)
