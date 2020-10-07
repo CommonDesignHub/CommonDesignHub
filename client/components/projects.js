@@ -56,13 +56,17 @@ class Catalog extends Component {
 		            list.length
 		            ?list.map(project => (
 		              <div className="project-bar" style={{backgroundColor: project.color}} key={project.id} id={project.id}>
-		                <div style={{float:"right"}}>Right alligned thumbnail</div>
-		                <div className="vote-btn-container">
-		                  <button id={`up${project.id}`} className="upvote" onClick={this.voteProject.bind(this, project.id, 1, 'test subject')}>Up Vote</button>
-		                  <button id={`dn${project.id}`} className="downvote" onClick={this.voteProject.bind(this, project.id, -1, 'test subject')}>Dn Vote</button>
-		                </div>
-		                <Link to={`/project/${project.id}`} style={{textAlign:"center", marginRight:"150px"}}>{project.title}</Link>
-		                <p>Likes: {project.voteCount}</p>
+                    <div>
+  		                <div className="vote-btn-container">
+  		                  <button id={`up${project.id}`} className="upvote" onClick={this.voteProject.bind(this, project.id, 1, 'test subject')}>Up Vote</button>
+  		                  <button id={`dn${project.id}`} className="downvote" onClick={this.voteProject.bind(this, project.id, -1, 'test subject')}>Dn Vote</button>
+  		                </div>
+  		                <p>Likes: {project.voteCount}</p>
+                    </div>
+                    <div>
+  		                <Link to={`/project/${project.id}`} style={{textAlign:"center", marginRight:"150px"}}>{project.title}</Link>
+                    </div>
+		                <div style={{float:"right", height:"100%", backgroundColor:"green"}}>Right aligned thumbnail</div>
 		              </div>
 		            ))
 		            :null
@@ -71,11 +75,6 @@ class Catalog extends Component {
 		      </div>
         ):null}
       </React.Fragment>
-
-
-
-
-
 
     )
   }

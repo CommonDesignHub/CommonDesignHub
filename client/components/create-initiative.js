@@ -5,7 +5,10 @@ class CreateInitiative extends Component {
   constructor() {
     super()
 
-    this.state = {selectedCategoryId: null}
+    this.state = {
+    	selectedCategoryId: null,
+    	newCatDisabled:true,
+    }
   }
 
   onCategoryChange = (e)=>{
@@ -15,9 +18,20 @@ class CreateInitiative extends Component {
     elem2.selectedIndex = 0;
   }
 
+  onCategoryChange = (e)=>{
+  	var elem = document.getElementById("categories")
+  	var value = elem.options[elem.selectedIndex].value
+
+  	if(value == "OTHER") {
+  		this.setState({selectedCategoryId: value, newCatDisabled:false})
+  	}else{
+  		this.setState({selectedCategoryId: value, newCatDisabled:true})
+  	}
+  }
+
   render() {
-  	var items = this.state.selectedCategoryId?this.props.categories.find((category)=>{return category.id==this.state.selectedCategoryId}).items:[]
-console.log(this.state.selectedCategoryId)
+  	var items = this.state.selectedCategoryId && !isNaN(this.state.selectedCategoryId)?this.props.categories.find((category)=>{return category.id==this.state.selectedCategoryId}).items:[]
+
     return (
     	<React.Fragment>
 	      <div>
@@ -25,29 +39,27 @@ console.log(this.state.selectedCategoryId)
 	      	This item should fall into a category.
 	      	Select 'other' if list of categories is not relevant</h3>
 	      	<form>
-	      	  <label htmlFor="pname">Initiative Name:</label>
-	      		<input type="text" id="" name="Categorical Item Name (Car, Computer)"/>
-	      	  <br/> <br/>
-
 	      	  <label htmlFor="categories">Category</label>
 						<select defaultValue={'DEFAULT'} onChange={this.onCategoryChange} name="categories" id="categories">
 							<option value="DEFAULT" disabled hidden>Choose here</option>
 						  {this.props.categories.map((category, i)=>{
 						  	return <option key={i} value={category.id}>{category.title}</option>
 						  })}
+						  <option value="OTHER">Other</option>
 						</select> 
+						<div style={{display: this.state.newCatDisabled?"none":"block"}}>
+		          <label htmlFor="newcategory">New Category</label>
+		      		<input type="text"  disabled={this.state.newCatDisabled} id="newcategory" name="newcategory"/>
+						</div>
+	      	  <label htmlFor="itemname">Initiative Name:</label>
+	      		<input type="text" id="" name="Categorical Item Name (Car, Computer)"/>
 	      	  <br/> <br/>
-	      	  <label htmlFor="items">Item</label>
-						<select defaultValue={'DEFAULT'} name="items" id="items">
-							<option value="DEFAULT" disabled hidden>Choose here</option>
-						  {items.map((category, i)=>{
-						  	return <option key={i} value={category.id}>{category.title}</option>
-						  })}
-						</select>
-						<br/><br/>
-	      	  <label htmlFor="pname">Initiative Description:</label>
-	      		<input type="text" id="" name="Description"/>
-	      	  <br/> <br/>
+	      	  <label htmlFor="description">Initiative Description:</label>
+	      	  <textarea rows="4" cols="50" name="description">Enter text here...</textarea>
+	      	  <br/>
+	      	  <br/>
+	      	  <button type="submit">Submit</button>
+
 	      	</form>
 	      </div>
     	</React.Fragment>

@@ -9,7 +9,9 @@ class CreateProject extends Component {
       images: [],
       categories: [],
       selectedCategoryId: null,
-      selectedItem: null
+      selectedItem: null,
+      newCatDisabled:true,
+      newItemDisabled:true
     }
   }
 
@@ -44,13 +46,31 @@ class CreateProject extends Component {
 
   onCategoryChange = (e)=>{
   	var elem = document.getElementById("categories")
-  	this.setState({selectedCategoryId: elem.options[elem.selectedIndex].value})
+  	var value = elem.options[elem.selectedIndex].value
+
+  	if(value == "OTHER") {
+  		this.setState({selectedCategoryId: value, newCatDisabled:false, selectedItem:null, newItemDisabled:true})
+  	}else{
+  		this.setState({selectedCategoryId: value, newCatDisabled:true, selectedItem:null, newItemDisabled:true})
+  	}
+  	
   	var elem2 = document.getElementById("items")
     elem2.selectedIndex = 0;
   }
 
+  onItemChange = ()=>{
+  	var elem = document.getElementById("items")
+  	var value = elem.options[elem.selectedIndex].value
+
+  	if(value == "OTHER") {
+  		this.setState({newItemDisabled:false})
+  	}else{
+  		this.setState({newItemDisabled:true})
+  	}
+  }
+
   render() {
-  	var items = this.state.selectedCategoryId?this.props.categories.find((category)=>{return category.id==this.state.selectedCategoryId}).items:[]
+  	var items = this.state.selectedCategoryId && !isNaN(this.state.selectedCategoryId)?this.props.categories.find((category)=>{return category.id==this.state.selectedCategoryId}).items:[]
     return (
       <div>
       	<h3>Create a project here</h3>
@@ -62,16 +82,20 @@ class CreateProject extends Component {
       	  <label htmlFor="repo-url">Repository URL</label>
       		<input type="text" id="" name="url"/>      		
       	  <br/><br/>
+
       	  <label htmlFor="files">Add a file</label>
           <input
             type="file"
+            multiple
             name="files"
             onChange={this.onImageChange}
             alt="image"
           />
       	  <br/><br/>
-          <label htmlFor="description">Description</label>
-      		<input type="text" id="" name="description"/>      		
+
+          <label htmlFor="description">Project Description</label>
+	        <textarea disabled={this.state.newItemDisabled} id="projectdescription" name="description" rows="4" cols="50" name="description">Enter text here...</textarea>
+
       	  <br/><br/>
       	  <label htmlFor="categories">Category</label>
 					<select defaultValue={'DEFAULT'} onChange={this.onCategoryChange} name="categories" id="categories">
@@ -79,16 +103,43 @@ class CreateProject extends Component {
 					  {this.props.categories.map((category, i)=>{
 					  	return <option key={i} value={category.id}>{category.title}</option>
 					  })}
+					  <option value="OTHER">Other</option>
+
 					</select>
-					<br/><br/>
+      	  <br/><br/>
+
+					<div style={{display: this.state.newCatDisabled?"none":"block"}}>
+	          <label htmlFor="newcategory">New Category</label>
+	      		<input type="text"  disabled={this.state.newCatDisabled} id="newcategory" name="newcategory"/>
+						<br/><br/>
+					</div>
+      	  
+
       	  <label htmlFor="items">Item</label>
-					<select defaultValue={'DEFAULT'} name="items" id="items">
+					<select defaultValue={'DEFAULT'} onChange={this.onItemChange} name="items" id="items">
 						<option value="DEFAULT" disabled hidden>Choose here</option>
 					  {items.map((category, i)=>{
 					  	return <option key={i} value={category.id}>{category.title}</option>
 					  })}
+					  <option value="OTHER">Other</option>
+
 					</select>
-					<p>*If desired category and item are not available, you will have to create an initiative to add them to the catalog tree</p>
+      	  <br/><br/>
+
+					<div style={{display: this.state.newItemDisabled?"none":"block"}}>
+	          <label htmlFor="newitem">Item</label>
+	      		<input type="text" disabled={this.state.newItemDisabled} id="newitem" name="newitem"/>
+					</div>
+					<div style={{display: this.state.newItemDisabled?"none":"block"}}>
+	          <label htmlFor="description">Item Description</label>
+	          <textarea disabled={this.state.newItemDisabled} id="itemdescription" name="description" rows="4" cols="50" name="description">Enter text here...</textarea>
+					</div>
+					<br/>
+					<button type="submit">Submit</button>
+					<br/>
+      	  <br/><br/>
+      	  <br/><br/>
+
       	</form>
 
       </div>
