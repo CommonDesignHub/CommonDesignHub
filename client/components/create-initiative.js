@@ -5,10 +5,19 @@ class CreateInitiative extends Component {
   constructor() {
     super()
 
-    this.state = {}
+    this.state = {selectedCategoryId: null}
+  }
+
+  onCategoryChange = (e)=>{
+  	var elem = document.getElementById("categories")
+  	this.setState({selectedCategoryId: elem.options[elem.selectedIndex].value})
+  	var elem2 = document.getElementById("items")
+    elem2.selectedIndex = 0;
   }
 
   render() {
+  	var items = this.state.selectedCategoryId?this.props.categories.find((category)=>{return category.id==this.state.selectedCategoryId}).items:[]
+console.log(this.state.selectedCategoryId)
     return (
     	<React.Fragment>
 	      <div>
@@ -20,16 +29,22 @@ class CreateInitiative extends Component {
 	      		<input type="text" id="" name="Categorical Item Name (Car, Computer)"/>
 	      	  <br/> <br/>
 
-					  <label htmlFor="categories">Choose a category:</label>
-						<select name="categories" id="categories">
-  						<option value="" selected disabled hidden>Choose here</option>
+	      	  <label htmlFor="categories">Category</label>
+						<select defaultValue={'DEFAULT'} onChange={this.onCategoryChange} name="categories" id="categories">
+							<option value="DEFAULT" disabled hidden>Choose here</option>
 						  {this.props.categories.map((category, i)=>{
 						  	return <option key={i} value={category.id}>{category.title}</option>
 						  })}
-						  <option value="0">Other</option>
 						</select> 
 	      	  <br/> <br/>
-
+	      	  <label htmlFor="items">Item</label>
+						<select defaultValue={'DEFAULT'} name="items" id="items">
+							<option value="DEFAULT" disabled hidden>Choose here</option>
+						  {items.map((category, i)=>{
+						  	return <option key={i} value={category.id}>{category.title}</option>
+						  })}
+						</select>
+						<br/><br/>
 	      	  <label htmlFor="pname">Initiative Description:</label>
 	      		<input type="text" id="" name="Description"/>
 	      	  <br/> <br/>

@@ -79,7 +79,6 @@ class CreateProject extends Component {
 					  {this.props.categories.map((category, i)=>{
 					  	return <option key={i} value={category.id}>{category.title}</option>
 					  })}
-					  <option value="">Other</option>
 					</select>
 					<br/><br/>
       	  <label htmlFor="items">Item</label>
@@ -88,8 +87,8 @@ class CreateProject extends Component {
 					  {items.map((category, i)=>{
 					  	return <option key={i} value={category.id}>{category.title}</option>
 					  })}
-					  <option value="">Other</option>
 					</select>
+					<p>*If desired category and item are not available, you will have to create an initiative to add them to the catalog tree</p>
       	</form>
 
       </div>
