@@ -11,7 +11,17 @@ async function seed() {
   	return starter_string + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
   }
 
+  var randColor = ()=>{
+  	const d = 175
+    const a = Math.ceil(Math.random() * 80 + d)
+    const b = Math.ceil(Math.random() * 80 + d)
+    const c = Math.ceil(Math.random() * 80 + d)
+    const color = `rgb(${a},${b},${c})`
+    return color
+  }
+
   const users = await Promise.all([
+  	User.create({email: 'will@pix.com', password: '1234'}),
     User.create({email: 'cody@email.com', password: '123'}),
     User.create({email: 'murphy@email.com', password: '123'}),
     User.create({email: 'asdas@email.com', password: '123'}),
@@ -67,9 +77,9 @@ async function seed() {
 
   var projects = []
   for (let item of items){
-  	var proj1 = await Project.create({title:item.title+1, description: randString("project description "), version_control_url:randString("https://www.")+".com"})
-  	var proj2 = await Project.create({title:item.title+2, description: randString("project description "), version_control_url:randString("https://www.")+".com"})
-  	var proj3 = await Project.create({title:item.title+3, description: randString("project description "), version_control_url:randString("https://www.")+".com"})
+  	var proj1 = await Project.create({title:item.title+randString("project title "), description: randString("project description "), color:randColor(), version_control_url:randString("https://www.")+".com"})
+  	var proj2 = await Project.create({title:item.title+randString("project title "), description: randString("project description "), color:randColor(), version_control_url:randString("https://www.")+".com"})
+  	var proj3 = await Project.create({title:item.title+randString("project title "), description: randString("project description "), color:randColor(), version_control_url:randString("https://www.")+".com"})
   	await proj1.setItem(item)
   	await proj2.setItem(item)
   	await proj3.setItem(item)

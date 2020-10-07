@@ -13,5 +13,8 @@ module.exports = db.define('project', {
   },
   description: {
   	type: Sequelize.TEXT,
+  },
+  color: {
+  	type: Sequelize.STRING,
   }
 })

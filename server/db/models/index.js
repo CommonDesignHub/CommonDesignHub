@@ -31,7 +31,9 @@ User.hasMany(Project)
 Project.belongsTo(User)
 
 Vote.belongsTo(Project)
+Project.hasMany(Vote)
 Vote.belongsTo(User)
+User.hasMany(Vote)
 
 
 /**

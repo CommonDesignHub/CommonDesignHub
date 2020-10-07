@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Item, Project} = require('../db/models')
+const {Item, Project, Vote} = require('../db/models')
 
 module.exports = router
 
@@ -24,7 +24,7 @@ router.post('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
 	var id_param = req.params.id
   try {
-    const items = await Item.findOne({where: {id:id_param}, include:Project})
+    const items = await Item.findOne({where: {id:id_param}, include:[{model: Project, include: [Vote]}]})
     res.json(items)
   } catch (err) {
     next(err)
