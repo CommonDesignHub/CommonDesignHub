@@ -51,17 +51,17 @@ class Catalog extends Component {
 
   render() {
     let list = this.state.projects
-    console.log(list)
     list.map((project) => {
       project.voteCount = 0
       project.priority = 0
       project.votes.forEach(vote => {
-        if (vote.dir && vote.created_at) {
+        if (vote.dir && vote.createdAt) {
           project.priority+=parseInt(vote.dir)
         }
         if (vote.dir) {
           project.voteCount+=parseInt(vote.dir)
         }
+
       })
     })
     list = list.sort((a, b) => b.priority-a.priority)

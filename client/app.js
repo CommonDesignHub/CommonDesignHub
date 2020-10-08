@@ -35,7 +35,7 @@ class App extends Component {
   getUserLoggedIn = () => {
     this.setState({user_is_loading: true}, ()=>{      
       axios.get('/auth/me')
-      .then((res)=>{console.log(res.data); this.setState({user_is_loading: false, user:res.data, isLoggedIn: !!res.data.id})})
+      .then((res)=>{this.setState({user_is_loading: false, user:res.data, isLoggedIn: !!res.data.id})})
       .catch(()=>{})  
     })
   }
