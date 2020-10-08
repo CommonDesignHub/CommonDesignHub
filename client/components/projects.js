@@ -11,25 +11,25 @@ class Catalog extends Component {
   }
 
   componentDidMount(){
-  	this.getItem()
+    this.getItem()
   }
 
   getItem = (e)=>{
-  	var id = this.props.match.params.id
-  	axios.get(`/api/item/${id}`)
-  	.then((ret)=>{
-  		this.setState({item: ret.data, projects:ret.data.projects})
-  	})
-  	.catch(()=>{})
+    var id = this.props.match.params.id
+    axios.get(`/api/item/${id}`)
+    .then((ret)=>{
+      this.setState({item: ret.data, projects:ret.data.projects})
+    })
+    .catch(()=>{})
   }
 
   voteProject = (pid, dir)=>{
-  	var user_id = this.props.user.id
-  	if(!user_id){
-  		return
-  	}
-  	axios.post(`/api/vote?pid=${pid}&dir=${dir}`)
-  	.then((ret)=>{
+    var user_id = this.props.user.id
+    if(!user_id){
+      return
+    }
+    axios.post(`/api/vote?pid=${pid}&dir=${dir}`)
+    .then((ret)=>{
       const project = this.state.projects.find(project => project.id === pid)
       let i = -1
       const bool = project && project.votes && project.votes.some((vote) => {
@@ -45,8 +45,8 @@ class Catalog extends Component {
         project.votes.push({userId: user_id, dir: dir})
         this.setState({projects: this.state.projects})
       }
-  	})
-  	.catch(()=>{})
+    })
+    .catch(()=>{})
   }
 
   render() {
@@ -69,33 +69,33 @@ class Catalog extends Component {
     return (
       <React.Fragment>
         {this.state.item.id?(
-        	<div>
-		        <p>{this.state.item.title}</p>
-		      	<p>{this.state.item.description}</p>
-		      	<br/>
-		      	<p>Projects List</p>
-		        <div className="project-container">
-		          {
-		            list.length
-		            ?list.map(project => (
-		              <div className="project-bar" style={{backgroundColor: project.color}} key={project.id} id={project.id}>
+          <div>
+            <p>{this.state.item.title}</p>
+            <p>{this.state.item.description}</p>
+            <br/>
+            <p>Projects List</p>
+            <div className="project-container">
+              {
+                list.length
+                ?list.map(project => (
+                  <div className="project-bar" style={{backgroundColor: project.color}} key={project.id} id={project.id}>
                     <div>
-  		                <div className="vote-btn-container">
-  		                  <button id={`up${project.id}`} className="upvote" onClick={this.voteProject.bind(this, project.id, 1)}>Up Vote</button>
-  		                  <button id={`dn${project.id}`} className="downvote" onClick={this.voteProject.bind(this, project.id, -1)}>Dn Vote</button>
-  		                </div>
-  		                <p>Likes: {project.voteCount}</p>
+                      <div className="vote-btn-container">
+                        <button id={`up${project.id}`} className="upvote" onClick={this.voteProject.bind(this, project.id, 1)}>Up Vote</button>
+                        <button id={`dn${project.id}`} className="downvote" onClick={this.voteProject.bind(this, project.id, -1)}>Dn Vote</button>
+                      </div>
+                      <p>Likes: {project.voteCount}</p>
                     </div>
                     <div>
-  		                <Link to={`/project/${project.id}`} style={{textAlign:"center", marginRight:"150px"}}>{project.title}</Link>
+                      <Link to={`/project/${project.id}`} style={{textAlign:"center", marginRight:"150px"}}>{project.title}</Link>
                     </div>
-		                <div style={{float:"right", height:"100%", backgroundColor:"green"}}>Right aligned thumbnail</div>
-		              </div>
-		            ))
-		            :null
-		          }
-		        </div>
-		      </div>
+                    <div style={{float:"right", height:"100%", backgroundColor:"green"}}>Right aligned thumbnail</div>
+                  </div>
+                ))
+                :null
+              }
+            </div>
+          </div>
         ):null}
       </React.Fragment>
 

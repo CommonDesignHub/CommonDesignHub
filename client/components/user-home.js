@@ -16,9 +16,9 @@ export const UserHome = props => {
       with the creation of initiatives, fost new open source phsyical design.  Our sole directive is to act as a catalog for makers
       and assist in connecting design to product realization.</p>
       <div style={{}}>
-	      <div style={{height:"100px", width:"100px", backgroundColor: "yellow"}}>Most Recent Projects</div>
-	      <div style={{height:"100px", width:"100px", backgroundColor: "cyan"}}>Most Recent Projects</div>
-	      <div style={{height:"100px", width:"100px", backgroundColor: "magenta"}}>Most Recent Projects</div>
+        <div style={{height:"100px", width:"100px", backgroundColor: "yellow"}}>Most Recent Projects</div>
+        <div style={{height:"100px", width:"100px", backgroundColor: "cyan"}}>Most Recent Projects</div>
+        <div style={{height:"100px", width:"100px", backgroundColor: "magenta"}}>Most Recent Projects</div>
       </div>
 
     </div>

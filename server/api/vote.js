@@ -14,17 +14,17 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-  	const {pid, dir} = req.query
+    const {pid, dir} = req.query
     let projectId = pid
     let userId = req.user.id
 
-  	let vote = await Vote.findOne({where: {userId, projectId}})
-  	if(!vote){
-    	vote = await Vote.create({dir, userId, projectId})
-  	}else{
-  		vote.dir = dir
-  		vote = await vote.save()
-  	}
+    let vote = await Vote.findOne({where: {userId, projectId}})
+    if(!vote){
+      vote = await Vote.create({dir, userId, projectId})
+    }else{
+      vote.dir = dir
+      vote = await vote.save()
+    }
 
     res.json(vote)
   } catch (err) {
@@ -33,7 +33,7 @@ router.post('/', async (req, res, next) => {
 })
 
 router.get('/:id', async (req, res, next) => {
-	var id_param = req.params.id
+  var id_param = req.params.id
   try {
     const votes = await Vote.findByPk(id_param)
     res.json(votes)
@@ -43,7 +43,7 @@ router.get('/:id', async (req, res, next) => {
 })
 
 router.put('/:id', async (req, res, next) => {
-	var id_param = req.params.id
+  var id_param = req.params.id
   try {
     const votes = await Vote.findByPk(id_param)
     await votes.update(req.body)
@@ -54,7 +54,7 @@ router.put('/:id', async (req, res, next) => {
 })
 
 router.delete('/:id', async (req, res, next) => {
-	var id_param = req.params.id
+  var id_param = req.params.id
   try {
     const votes = await Vote.findByPk(id_param)
     var ret = await votes.destroy()

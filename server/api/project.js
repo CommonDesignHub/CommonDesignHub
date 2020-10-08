@@ -22,7 +22,7 @@ router.post('/', async (req, res, next) => {
 })
 
 router.get('/:id', async (req, res, next) => {
-	var id_param = req.params.id
+  var id_param = req.params.id
   try {
     const projects = await Project.findByPk(id_param)
     res.json(projects)
@@ -32,7 +32,7 @@ router.get('/:id', async (req, res, next) => {
 })
 
 router.put('/:id', async (req, res, next) => {
-	var id_param = req.params.id
+  var id_param = req.params.id
   try {
     const projects = await Project.findByPk(id_param)
     await projects.update(req.body)
@@ -43,7 +43,7 @@ router.put('/:id', async (req, res, next) => {
 })
 
 router.delete('/:id', async (req, res, next) => {
-	var id_param = req.params.id
+  var id_param = req.params.id
   try {
     const projects = await Project.findByPk(id_param)
     var ret = await projects.destroy()

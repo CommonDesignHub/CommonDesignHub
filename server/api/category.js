@@ -22,7 +22,7 @@ router.post('/', async (req, res, next) => {
 })
 
 router.get('/:id', async (req, res, next) => {
-	var id_param = req.params.id
+  var id_param = req.params.id
   try {
     const category = await Category.findByPk(id_param)
     res.json(category)
@@ -32,7 +32,7 @@ router.get('/:id', async (req, res, next) => {
 })
 
 router.put('/:id', async (req, res, next) => {
-	var id_param = req.params.id
+  var id_param = req.params.id
   try {
     const category = await Category.findByPk(id_param)
     await category.update(req.body)
@@ -43,7 +43,7 @@ router.put('/:id', async (req, res, next) => {
 })
 
 router.delete('/:id', async (req, res, next) => {
-	var id_param = req.params.id
+  var id_param = req.params.id
   try {
     const category = await Category.findByPk(id_param)
     var ret = await category.destroy()
