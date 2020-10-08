@@ -4,8 +4,8 @@ import {Link, useHistory} from 'react-router-dom'
 import axios from 'axios'
 
 class Catalog extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 
     this.state = {item:{}, projects:[]}
   }
@@ -18,17 +18,40 @@ class Catalog extends Component {
   	var id = this.props.match.params.id
   	axios.get(`/api/item/${id}`)
   	.then((ret)=>{
-  		this.setState({item: ret.data, projects:ret.data.projects}, ()=>{console.log(this.state)})
+  		this.setState({item: ret.data, projects:ret.data.projects})
   	})
   	.catch(()=>{})
   }
 
-  voteProject = (project_id, dir, str)=>{
-  	//create a vote for the project
+  voteProject = (pid, dir)=>{
+  	var user_id = this.props.user.id
+  	if(!user_id){
+  		return
+  	}
+  	axios.post(`/api/vote?pid=${pid}&dir=${dir}`)
+  	.then((ret)=>{
+      const project = this.state.projects.find(project => project.id === pid)
+      let i = -1
+      const bool = project && project.votes && project.votes.some((vote) => {
+        i++
+        return vote.userId === user_id
+      })
+      if (bool) {
+        // if user has already voted, update vote on front end
+        project.votes[i]={userId: user_id, dir: dir}
+        this.setState({projects: this.state.projects})
+      } else if (project) {
+        // if user has not voted, add vote to votes array
+        project.votes.push({userId: user_id, dir: dir})
+        this.setState({projects: this.state.projects})
+      }
+  	})
+  	.catch(()=>{})
   }
 
   render() {
     let list = this.state.projects
+    console.log(list)
     list.map((project) => {
       project.voteCount = 0
       project.priority = 0
@@ -58,8 +81,8 @@ class Catalog extends Component {
 		              <div className="project-bar" style={{backgroundColor: project.color}} key={project.id} id={project.id}>
                     <div>
   		                <div className="vote-btn-container">
-  		                  <button id={`up${project.id}`} className="upvote" onClick={this.voteProject.bind(this, project.id, 1, 'test subject')}>Up Vote</button>
-  		                  <button id={`dn${project.id}`} className="downvote" onClick={this.voteProject.bind(this, project.id, -1, 'test subject')}>Dn Vote</button>
+  		                  <button id={`up${project.id}`} className="upvote" onClick={this.voteProject.bind(this, project.id, 1)}>Up Vote</button>
+  		                  <button id={`dn${project.id}`} className="downvote" onClick={this.voteProject.bind(this, project.id, -1)}>Dn Vote</button>
   		                </div>
   		                <p>Likes: {project.voteCount}</p>
                     </div>

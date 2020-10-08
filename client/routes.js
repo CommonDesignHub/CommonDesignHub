@@ -20,17 +20,16 @@ class Routes extends Component {
 
   render() {
     const {isLoggedIn} = this.props
-
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/catalog" render={ (props) => (<Catalog categories={this.props.categories} c_loader={this.props.categories_loader} c_error={this.props.categories_error}/>) }/>
-        <Route path="/items/:id" component={Projects}/>
         <Route path="/fileupload" component={FileUpload} />
         <Route path="/create-initiative" render={ (props) => (<CreateInitiative categories={this.props.categories} c_loader={this.props.categories_loader} c_error={this.props.categories_error}/>) }/>
         <Route path="/create-project" render={ (props) => (<CreateProject categories={this.props.categories} c_loader={this.props.categories_loader} c_error={this.props.categories_error}/>) }/>
+        <Route path="/items/:id" render={ (props) => (<Projects {...props} test="test" user={this.props.user}/>) }/>
 
         {isLoggedIn && (
           <Switch>

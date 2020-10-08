@@ -117,8 +117,8 @@ async function seed() {
   	await vote4.setProject(project)
   	await vote1.setUser(users[0])
   	await vote2.setUser(users[1])
-  	await vote3.setUser(users[1])
-  	await vote4.setUser(users[1])
+  	await vote3.setUser(users[2])
+  	await vote4.setUser(users[3])
   }
 
   console.log('seeded votes')

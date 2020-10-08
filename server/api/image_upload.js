@@ -19,7 +19,7 @@ router.post(
   upload.single('files' /* name attribute of <file> element in your form */),
   (req, res) => {
     const tempPath = req.file.path
-    if (req.file.mimetype === 'image/png') {
+    if (req.file.mimetype === 'image/png' || req.file.mimetype === 'image/jpeg') {
       res
         .status(200)
         .contentType('text/plain')

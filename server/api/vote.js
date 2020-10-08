@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Vote} = require('../db/models')
+const {Vote, User, Project} = require('../db/models')
 
 module.exports = router
 
@@ -14,8 +14,19 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const votes = await Vote.create(req.body)
-    res.json(votes)
+  	const {pid, dir} = req.query
+    let projectId = pid
+    let userId = req.user.id
+
+  	let vote = await Vote.findOne({where: {userId, projectId}})
+  	if(!vote){
+    	vote = await Vote.create({dir, userId, projectId})
+  	}else{
+  		vote.dir = dir
+  		vote = await vote.save()
+  	}
+
+    res.json(vote)
   } catch (err) {
     next(err)
   }

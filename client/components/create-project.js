@@ -73,7 +73,7 @@ class CreateProject extends Component {
   	var items = this.state.selectedCategoryId && !isNaN(this.state.selectedCategoryId)?this.props.categories.find((category)=>{return category.id==this.state.selectedCategoryId}).items:[]
     return (
       <div>
-      	<h3>Create a project here</h3>
+      	<h3>Create a Project</h3>
 
       	<form>
       	  <label htmlFor="pname">Project name:</label>
@@ -83,7 +83,7 @@ class CreateProject extends Component {
       		<input type="text" id="" name="url"/>      		
       	  <br/><br/>
 
-      	  <label htmlFor="files">Add a file</label>
+      	  <label htmlFor="files">Add an image</label>
           <input
             type="file"
             multiple
@@ -97,7 +97,7 @@ class CreateProject extends Component {
 	        <textarea disabled={this.state.newItemDisabled} id="projectdescription" name="description" rows="4" cols="50" name="description">Enter text here...</textarea>
 
       	  <br/><br/>
-      	  <label htmlFor="categories">Category</label>
+      	  <label htmlFor="categories">Department</label>
 					<select defaultValue={'DEFAULT'} onChange={this.onCategoryChange} name="categories" id="categories">
 						<option value="DEFAULT" disabled hidden>Choose here</option>
 					  {this.props.categories.map((category, i)=>{
@@ -109,7 +109,7 @@ class CreateProject extends Component {
       	  <br/><br/>
 
 					<div style={{display: this.state.newCatDisabled?"none":"block"}}>
-	          <label htmlFor="newcategory">New Category</label>
+	          <label htmlFor="newcategory">New Department</label>
 	      		<input type="text"  disabled={this.state.newCatDisabled} id="newcategory" name="newcategory"/>
 						<br/><br/>
 					</div>
