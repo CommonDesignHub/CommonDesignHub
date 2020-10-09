@@ -25,9 +25,12 @@ class Catalog extends Component {
 
   voteProject = (pid, dir)=>{
     var user_id = this.props.user.id
+    console.log("a")
     if(!user_id){
       return
     }
+        console.log("b")
+
     axios.post(`/api/vote?pid=${pid}&dir=${dir}`)
     .then((ret)=>{
       const project = this.state.projects.find(project => project.id === pid)
@@ -78,15 +81,15 @@ class Catalog extends Component {
               {
                 list.length
                 ?list.map(project => (
-                  <div className="project-bar" style={{backgroundColor: project.color}} key={project.id} id={project.id}>
-                    <div>
+                  <div className="project-bar" style={{backgroundColor: project.color, width:"100%"}} key={project.id} id={project.id}>
+                    <div style={{width:"5em"}}>
                       <div className="vote-btn-container">
-                        <button id={`up${project.id}`} className="upvote" onClick={this.voteProject.bind(this, project.id, 1)}>Up Vote</button>
-                        <button id={`dn${project.id}`} className="downvote" onClick={this.voteProject.bind(this, project.id, -1)}>Dn Vote</button>
+                        <button id={`up${project.id}`} className="upvote" onClick={this.voteProject.bind(this, project.id, 1)}>Up</button>
+                        <button id={`dn${project.id}`} className="downvote" onClick={this.voteProject.bind(this, project.id, -1)}>Dn</button>
                       </div>
                       <p>Likes: {project.voteCount}</p>
                     </div>
-                    <div>
+                    <div style={{width:"100%"}}>
                       <Link to={`/project/${project.id}`} style={{textAlign:"center", marginRight:"150px"}}>{project.title}</Link>
                     </div>
                     <div style={{float:"right", height:"100%", backgroundColor:"green"}}>Right aligned thumbnail</div>

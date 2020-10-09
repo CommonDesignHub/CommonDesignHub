@@ -1,43 +1,48 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import axios from 'axios'
+import { withRouter } from 'react-router-dom'
 
 class CreateProject extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      images: [],
       categories: [],
-      selectedCategoryId: null,
-      selectedItem: null,
+      selectedDepartmentId: null,
+      selectedItemId: null,
       newCatDisabled:true,
-      newItemDisabled:true
+      newItemDisabled:true,
+      projectName:"",
+      repoUrl:"",
+      projectDescription:"",
+      alternateDepartmentName:"",
+      alternateItemName:"",
     }
-  }
-
-  onImageChange = event => {
-    console.log(event.target.files)
-
-    this.setState({
-      images: event.target.files
-    })
   }
 
   onSubmit = e => {
     e.preventDefault()
 
-    const formData = new FormData()
+    var {selectedDepartmentId, selectedItemId, projectName, projectDescription, alternateDepartmentName, alternateItemName, repoUrl} = this.state
 
-    Array.from(this.state.images).forEach(image => {
-      formData.append('files', image)
-    })
+    var payload = {
+      title:projectName,
+      version_control_url:repoUrl,
+      description:projectDescription,
+      categoryId:selectedDepartmentId,
+      itemId:selectedItemId,
+      alternateDepartmentName:alternateDepartmentName,
+      alternateItemName:alternateItemName,
+    }
 
     axios
-      .post(`http://localhost:1337/api/upload`, formData, {
-        headers: {'Content-Type': 'multipart/form-data'}
-      })
+      .post(`http://localhost:1337/api/project`, payload)
       .then(res => {
-        console.log(res)
+        let id = res.data.id
+        // let history = useHistory()
+        // window.location.href = `/projects/${id}`;
+        this.props.history.push(`/projects/${id}`)
       })
       .catch(err => {
         console.log(err)
@@ -49,52 +54,58 @@ class CreateProject extends Component {
     var value = elem.options[elem.selectedIndex].value
 
     if(value == "OTHER") {
-      this.setState({selectedCategoryId: value, newCatDisabled:false, selectedItem:null, newItemDisabled:true})
+      this.setState({selectedDepartmentId: value, newCatDisabled:false, selectedItemId:null, newItemDisabled:true})
     }else{
-      this.setState({selectedCategoryId: value, newCatDisabled:true, selectedItem:null, newItemDisabled:true})
+      this.setState({selectedDepartmentId: value, newCatDisabled:true, selectedItemId:null, newItemDisabled:true})
     }
     
     var elem2 = document.getElementById("items")
     elem2.selectedIndex = 0;
   }
 
-  onItemChange = ()=>{
+  onItemChange = (e)=>{
     var elem = document.getElementById("items")
     var value = elem.options[elem.selectedIndex].value
 
+    var bool
     if(value == "OTHER") {
-      this.setState({newItemDisabled:false})
+      bool = false
     }else{
-      this.setState({newItemDisabled:true})
+      bool = true
     }
+    this.setState({selectedItemId:value, newItemDisabled:bool})
+  }
+
+  onChange = (e, thing)=>{
+      // things used:
+      // projectName:"",
+      // repoUrl:"",
+      // projectDescription:"",
+      // alternateDepartmentName:"",
+      // alternateItemName:"",
+      var obj = {}
+      obj[thing]= e.target.value
+      this.setState(obj)
   }
 
   render() {
-    var items = this.state.selectedCategoryId && !isNaN(this.state.selectedCategoryId)?this.props.categories.find((category)=>{return category.id==this.state.selectedCategoryId}).items:[]
+    var items = this.state.selectedDepartmentId && !isNaN(this.state.selectedDepartmentId)?this.props.categories.find((category)=>{return category.id==this.state.selectedDepartmentId}).items:[]
     return (
       <div>
         <h3>Create a Project</h3>
 
-        <form>
+        <form onSubmit={this.onSubmit}>
           <label htmlFor="pname">Project name:</label>
-          <input type="text" id="" name="Name"/>
+          <input onChange={(e)=>{this.onChange(e, "projectName")}} type="text" id="" name="Name"/>
           <br/><br/>
           <label htmlFor="repo-url">Repository URL</label>
-          <input type="text" id="" name="url"/>         
-          <br/><br/>
+          <label htmlFor="repo-url">(Preferably Public Github Repo)</label>
 
-          <label htmlFor="files">Add an image</label>
-          <input
-            type="file"
-            multiple
-            name="files"
-            onChange={this.onImageChange}
-            alt="image"
-          />
+          <input onChange={(e)=>{this.onChange(e, "repoUrl")}} type="text" id="" name="url"/>         
           <br/><br/>
 
           <label htmlFor="description">Project Description</label>
-          <textarea disabled={this.state.newItemDisabled} id="projectdescription" name="description" rows="4" cols="50" name="description">Enter text here...</textarea>
+          <textarea onChange={(e)=>{this.onChange(e, "projectDescription")}} id="projectdescription" name="description" placeholder="Enter text here..." rows="4" cols="50" name="description"></textarea>
 
           <br/><br/>
           <label htmlFor="categories">Department</label>
@@ -110,13 +121,13 @@ class CreateProject extends Component {
 
           <div style={{display: this.state.newCatDisabled?"none":"block"}}>
             <label htmlFor="newcategory">New Department</label>
-            <input type="text"  disabled={this.state.newCatDisabled} id="newcategory" name="newcategory"/>
+            <input onChange={(e)=>{this.onChange(e, "alternateDepartmentName")}} type="text"  disabled={this.state.newCatDisabled} id="newcategory" name="newcategory"/>
             <br/><br/>
           </div>
           
 
           <label htmlFor="items">Item</label>
-          <select defaultValue={'DEFAULT'} onChange={this.onItemChange} name="items" id="items">
+          <select defaultValue={'DEFAULT'} disabled={!this.state.selectedDepartmentId} onChange={this.onItemChange} name="items" id="items">
             <option value="DEFAULT" disabled hidden>Choose here</option>
             {items.map((category, i)=>{
               return <option key={i} value={category.id}>{category.title}</option>
@@ -128,11 +139,7 @@ class CreateProject extends Component {
 
           <div style={{display: this.state.newItemDisabled?"none":"block"}}>
             <label htmlFor="newitem">Item</label>
-            <input type="text" disabled={this.state.newItemDisabled} id="newitem" name="newitem"/>
-          </div>
-          <div style={{display: this.state.newItemDisabled?"none":"block"}}>
-            <label htmlFor="description">Item Description</label>
-            <textarea disabled={this.state.newItemDisabled} id="itemdescription" name="description" rows="4" cols="50" name="description">Enter text here...</textarea>
+            <input onChange={(e)=>{this.onChange(e, "alternateItemName")}} type="text" disabled={this.state.newItemDisabled} id="newitem" name="newitem"/>
           </div>
           <br/>
           <button type="submit">Submit</button>
@@ -147,8 +154,7 @@ class CreateProject extends Component {
   }
 }
 
-
-export default CreateProject
+export default withRouter(CreateProject);
 
 /**
  * PROP TYPES

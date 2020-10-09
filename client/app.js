@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
-
 import {Navbar} from './components'
 import Routes from './routes'
 import axios from 'axios'
+import {connect} from 'react-redux'
+import {withRouter} from 'react-router-dom'
+import {me} from './store'
 
 class App extends Component {
   constructor() {
@@ -13,13 +15,12 @@ class App extends Component {
       categories_loader: false,
       categories_error:null,
       isLoggedIn:null,
-      user_is_loading: false,
-      user_id:null
     }
   }
 
   componentDidMount(){
-    this.getUserLoggedIn()
+    this.props.loadUserData()
+
     this.getCatalog()
   }
 
@@ -31,33 +32,38 @@ class App extends Component {
     })
   }
 
-
-  getUserLoggedIn = () => {
-    this.setState({user_is_loading: true}, ()=>{      
-      axios.get('/auth/me')
-      .then((res)=>{this.setState({user_is_loading: false, user:res.data, isLoggedIn: !!res.data.id})})
-      .catch(()=>{})  
-    })
-  }
-
   render(){
     return (
       <div>
-        <Navbar 
-          is_logged_in={this.state.isLoggedIn}
-          user_is_loading={this.state.user_is_loading}
-        />
+        <Navbar
+
+         />
         <Routes
+          get_catalog={this.getCatalog}
           categories={this.state.categories}
           categories_loader={this.state.categories_loader}
           categories_error={this.state.categories_error}
-          is_logged_in={this.state.isLoggedIn}
-          user = {this.state.user}
-          user_is_loading={this.state.user_is_loading}
+          isLoggedIn={this.props.isLoggedIn}
+          user = {this.props.user}
         />
       </div>
     )
   }
 }
 
-export default App
+const mapState = state => {
+  return {
+    user:state.user,
+    isLoggedIn: !!state.user.id
+  }
+}
+
+const mapDispatch = dispatch => {
+  return {
+    loadUserData() {
+      dispatch(me())
+    }
+  }
+}
+
+export default withRouter(connect(mapState, mapDispatch)(App))

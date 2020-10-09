@@ -1,7 +1,15 @@
 const router = require('express').Router()
-const {Project} = require('../db/models')
-
+const {Project, Category, Item} = require('../db/models')
 module.exports = router
+
+var randColor = ()=>{
+  const d = 175
+  const a = Math.ceil(Math.random() * 80 + d)
+  const b = Math.ceil(Math.random() * 80 + d)
+  const c = Math.ceil(Math.random() * 80 + d)
+  const color = `rgb(${a},${b},${c})`
+  return color
+}
 
 router.get('/', async (req, res, next) => {
   try {
@@ -14,8 +22,28 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const projects = await Project.create(req.body)
-    res.json(projects)
+    var {categoryId, itemId, alternateDepartmentName, alternateItemName} = req.body
+    var payload = req.body
+
+    var category
+    if(alternateDepartmentName && categoryId==="OTHER"){
+      category = await Category.create({title: alternateDepartmentName})
+      categoryId = category.id
+      payload.categoryId = categoryId
+    }
+
+    var item
+    if(alternateItemName && itemId==="OTHER"){
+      item = await Item.create({title: alternateItemName, categoryId})
+      await item.addCategory(category)
+      itemId = item.id
+      payload.itemId = itemId
+    }
+
+    payload.color = randColor()
+    console.log(payload)
+    const project = await Project.create(payload)
+    res.json(project)
   } catch (err) {
     next(err)
   }

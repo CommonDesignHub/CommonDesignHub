@@ -9,15 +9,20 @@ class Catalog extends Component {
     this.state = {}
   }
 
+  componentDidMount(){
+    this.props.get_catalog()
+  }
+
   onClick = (e)=>{
     var elem = document.getElementById(`subcategory${e}`)
     elem.classList.toggle("hidden")
   }
 
   render() {
+
     return (
       <div>
-        {this.props.c_loader?<h3>Loading Catalogs</h3>:null}
+        <p>- Want to see more here? Consider adding to the catalog by <Link to="/create-project">submiting a project</Link> or <Link to="/create-initiative">creating an initiative.</Link></p>
         {this.props.categories.length?
           <ul>
             {this.props.categories.map((category, i)=>{
@@ -27,7 +32,6 @@ class Catalog extends Component {
             })}
           </ul>
           :null}
-        <p>- Want to see more here? Consider adding to the catalog by <Link to="/create-project">submiting a project</Link> or <Link to="/create-initiative">creating an initiative.</Link></p>
       </div>
     )
   }

@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
+import axios from 'axios'
+import { withRouter } from 'react-router-dom'
 
 class CreateInitiative extends Component {
   constructor() {
@@ -8,15 +10,10 @@ class CreateInitiative extends Component {
 
     this.state = {
       selectedCategoryId: null,
+      alternateDepartmentName:"",
       newCatDisabled:true,
+      initiativeName:"",
     }
-  }
-
-  onCategoryChange = (e)=>{
-    var elem = document.getElementById("categories")
-    this.setState({selectedCategoryId: elem.options[elem.selectedIndex].value})
-    var elem2 = document.getElementById("items")
-    elem2.selectedIndex = 0;
   }
 
   onCategoryChange = (e)=>{
@@ -30,6 +27,36 @@ class CreateInitiative extends Component {
     }
   }
 
+  onChangeInitiative = (e)=>{
+    this.setState({initiativeName: e.target.value})
+  }
+
+  onChangeDeptName = (e)=>{
+    this.setState({alternateDepartmentName: e.target.value})
+  }
+
+  onSubmit = (e) => {
+    e.preventDefault()
+
+    var {selectedCategoryId, alternateDepartmentName, initiativeName} = this.state
+
+    var payload = {
+      category_id:selectedCategoryId,
+      category_name:alternateDepartmentName,
+      initiative_name:initiativeName,
+    }
+
+    axios
+      .post(`http://localhost:1337/api/item`, payload)
+      .then(res => {
+        let id = res.data.id
+        this.props.history.push(`/items/${id}`)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
   render() {
     var items = this.state.selectedCategoryId && !isNaN(this.state.selectedCategoryId)?this.props.categories.find((category)=>{return category.id==this.state.selectedCategoryId}).items:[]
 
@@ -39,7 +66,7 @@ class CreateInitiative extends Component {
           <h3>The purpose of creating an initiative is to start consideration for work on an open source item.
           Items belong to a department so they can be sorted in the <Link to="/catalog">catalog.  </Link>
           Select 'other' if no department options are relevant; you will need to create a new department if so.</h3>
-          <form>
+          <form onSubmit={this.onSubmit}>
             <label htmlFor="categories">Department</label>
             <select defaultValue={'DEFAULT'} onChange={this.onCategoryChange} name="categories" id="categories">
               <option value="DEFAULT" disabled hidden>Choose here</option>
@@ -51,10 +78,10 @@ class CreateInitiative extends Component {
             <br/><br/>
             <div style={{display: this.state.newCatDisabled?"none":"block"}}>
               <label htmlFor="newcategory">New Department</label>
-              <input type="text"  disabled={this.state.newCatDisabled} id="newcategory" name="newcategory"/>
+              <input onChange={this.onChangeDeptName} type="text"  disabled={this.state.newCatDisabled} id="newcategory" name="newcategory"/>
             </div>
             <label htmlFor="itemname">Initiative Name:</label>
-            <input type="text" id="" name="Categorical Item Name (Car, Computer)"/>
+            <input onChange={this.onChangeInitiative} type="text" id="" name="Categorical Item Name (Car, Computer)"/>
             <br/>
             <br/>
 
@@ -67,7 +94,7 @@ class CreateInitiative extends Component {
   }
 }
 
-export default CreateInitiative
+export default withRouter(CreateInitiative);
 
 /**
  * PROP TYPES

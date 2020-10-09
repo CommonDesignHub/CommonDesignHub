@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Item, Project, Vote} = require('../db/models')
+const {Item, Project, Vote, Category} = require('../db/models')
 
 module.exports = router
 
@@ -14,8 +14,18 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const items = await Item.create(req.body)
-    res.json(items)
+    var {category_id, category_name, initiative_name} = req.body
+    var category
+    if(category_name&&category_id==="OTHER"){
+      category = await Category.create({title: category_name})
+    }else{
+      category = await Category.findByPk(category_id)
+    }
+
+    const item = await Item.create({title:initiative_name})
+    await item.addCategory(category)
+
+    res.json(item)
   } catch (err) {
     next(err)
   }
