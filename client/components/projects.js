@@ -18,19 +18,34 @@ class Catalog extends Component {
     var id = this.props.match.params.id
     axios.get(`/api/item/${id}`)
     .then((ret)=>{
-      this.setState({item: ret.data, projects:ret.data.projects})
+
+      let list = ret.data.projects
+      list.map((project) => {
+        project.voteCount = 0
+        project.priority = 0
+        project.votes.forEach(vote => {
+          if (vote.dir && vote.createdAt) {
+            project.priority+=parseInt(vote.dir)
+          }
+          if (vote.dir) {
+            project.voteCount+=parseInt(vote.dir)
+          }
+
+        })
+      })
+      list = list.sort((a, b) => b.priority-a.priority)
+
+
+      this.setState({item: ret.data, projects:list})
     })
     .catch(()=>{})
   }
 
   voteProject = (pid, dir)=>{
     var user_id = this.props.user.id
-    console.log("a")
     if(!user_id){
       return
     }
-        console.log("b")
-
     axios.post(`/api/vote?pid=${pid}&dir=${dir}`)
     .then((ret)=>{
       const project = this.state.projects.find(project => project.id === pid)
@@ -56,25 +71,19 @@ class Catalog extends Component {
     let list = this.state.projects
     list.map((project) => {
       project.voteCount = 0
-      project.priority = 0
       project.votes.forEach(vote => {
-        if (vote.dir && vote.createdAt) {
-          project.priority+=parseInt(vote.dir)
-        }
         if (vote.dir) {
           project.voteCount+=parseInt(vote.dir)
         }
 
       })
     })
-    list = list.sort((a, b) => b.priority-a.priority)
 
     return (
       <React.Fragment>
         {this.state.item.id?(
           <div>
             <p>{this.state.item.title}</p>
-            <p>{this.state.item.description}</p>
             <br/>
             <p>Projects List</p>
             <div className="project-container">
@@ -90,9 +99,9 @@ class Catalog extends Component {
                       <p>Likes: {project.voteCount}</p>
                     </div>
                     <div style={{width:"100%"}}>
-                      <Link to={`/project/${project.id}`} style={{textAlign:"center", marginRight:"150px"}}>{project.title}</Link>
+                      <Link to={`/projects/${project.id}`} style={{textAlign:"center", marginRight:"150px"}}>{project.title}</Link>
                     </div>
-                    <div style={{float:"right", height:"100%", backgroundColor:"green"}}>Right aligned thumbnail</div>
+                    <div style= {{display:"inline-flex"}}><img style={{border:"1px solid #ddd", borderRadius:"4px", padding:"5px", width:"100px", margin:"10px"}} src={project.image_url?project.image_url:"/assets/placeholder.png"}></img></div>
                   </div>
                 ))
                 :null
@@ -100,6 +109,11 @@ class Catalog extends Component {
             </div>
           </div>
         ):null}
+        <div>
+          <p>Submit a comment</p>
+          <textarea></textarea>
+          <p>Attach an image</p>
+        </div>
       </React.Fragment>
 
     )

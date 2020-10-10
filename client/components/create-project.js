@@ -18,10 +18,11 @@ class CreateProject extends Component {
       projectDescription:"",
       alternateDepartmentName:"",
       alternateItemName:"",
+      images:[]
     }
   }
 
-  onSubmit = e => {
+  onSubmit = async e => {
     e.preventDefault()
 
     var {selectedDepartmentId, selectedItemId, projectName, projectDescription, alternateDepartmentName, alternateItemName, repoUrl} = this.state
@@ -34,6 +35,19 @@ class CreateProject extends Component {
       itemId:selectedItemId,
       alternateDepartmentName:alternateDepartmentName,
       alternateItemName:alternateItemName,
+    }
+
+    if(this.state.images.length){
+      const formData = new FormData()
+
+      Array.from(this.state.images).forEach(image => {
+        formData.append('files', image)
+      })
+      var res = await axios.post(`http://localhost:1337/api/upload`, formData, {
+        headers: {'Content-Type': 'multipart/form-data'}
+      })
+      var image_url = res.data.path
+      payload.image_url="/"+image_url
     }
 
     axios
@@ -77,15 +91,21 @@ class CreateProject extends Component {
   }
 
   onChange = (e, thing)=>{
-      // things used:
-      // projectName:"",
-      // repoUrl:"",
-      // projectDescription:"",
-      // alternateDepartmentName:"",
-      // alternateItemName:"",
-      var obj = {}
-      obj[thing]= e.target.value
-      this.setState(obj)
+    // things used:
+    // projectName:"",
+    // repoUrl:"",
+    // projectDescription:"",
+    // alternateDepartmentName:"",
+    // alternateItemName:"",
+    var obj = {}
+    obj[thing]= e.target.value
+    this.setState(obj)
+  }
+
+  onImageChange = event => {
+    this.setState({
+      images: event.target.files
+    })
   }
 
   render() {
@@ -142,8 +162,15 @@ class CreateProject extends Component {
             <input onChange={(e)=>{this.onChange(e, "alternateItemName")}} type="text" disabled={this.state.newItemDisabled} id="newitem" name="newitem"/>
           </div>
           <br/>
-          <button type="submit">Submit</button>
+          <p>Attach an image for thumbnail</p>
+          <input
+            type="file"
+            name="files"
+            onChange={this.onImageChange}
+            alt="image"
+          />
           <br/>
+          <button type="submit">Submit</button>
           <br/><br/>
           <br/><br/>
 

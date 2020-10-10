@@ -12,9 +12,12 @@ module.exports = db.define('project', {
     allowNull: false
   },
   description: {
-  	type: Sequelize.TEXT,
+    type: Sequelize.TEXT,
   },
   color: {
-  	type: Sequelize.STRING,
-  }
+    type: Sequelize.STRING,
+  },
+  image_url:{
+    type: Sequelize.STRING,
+  },
 })

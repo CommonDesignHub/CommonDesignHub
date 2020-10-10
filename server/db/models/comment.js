@@ -6,5 +6,8 @@ module.exports = db.define('comment', {
     type: Sequelize.TEXT,
     unique: true,
     allowNull: false
-  }
+  },
+  image_url:{
+    type: Sequelize.STRING,
+  },
 })

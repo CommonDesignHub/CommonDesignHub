@@ -12,8 +12,6 @@ class FileUpload extends Component {
   }
 
   onImageChange = event => {
-    console.log(event.target.files)
-
     this.setState({
       images: event.target.files
     })

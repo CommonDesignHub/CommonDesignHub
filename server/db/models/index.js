@@ -24,6 +24,9 @@ Comment.belongsTo(User)
 Project.hasMany(Comment)
 Comment.belongsTo(Project)
 
+Item.hasMany(Comment)
+Comment.belongsTo(Item)
+
 Project.belongsTo(Item)
 Item.hasMany(Project)
 

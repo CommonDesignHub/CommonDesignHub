@@ -8,11 +8,11 @@ async function seed() {
   console.log('db synced!')
 
   var randString = (starter_string)=>{
-  	return starter_string + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    return starter_string + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
   }
 
   var randColor = ()=>{
-  	const d = 175
+    const d = 185
     const a = Math.ceil(Math.random() * 80 + d)
     const b = Math.ceil(Math.random() * 80 + d)
     const c = Math.ceil(Math.random() * 80 + d)
@@ -21,7 +21,7 @@ async function seed() {
   }
 
   const users = await Promise.all([
-  	User.create({email: 'will@pix.com', password: '1234'}),
+    User.create({email: 'will@pix.com', password: '1234'}),
     User.create({email: 'cody@email.com', password: '123'}),
     User.create({email: 'murphy@email.com', password: '123'}),
     User.create({email: 'asdas@email.com', password: '123'}),
@@ -35,25 +35,23 @@ async function seed() {
   const furniture_category = await Category.create({title: "Furniture"})
   const tool_category = await Category.create({title: "Tools"})
   console.log('seeded categories')
-
-  var test_description = "this is a test description for an initiative"
   
-  var item1a =	await Item.create({title: "Toaster", description: "Hey we should all make an open source toaster"})
-  var item2a =	await Item.create({title: "Coffee Machine", description: "Hey we should all make an open source coffee machine"})
-  var item3a =	await Item.create({title: "Dishwasher", description: "Hey we should all make an open source dishwasher"})
+  var item1a =  await Item.create({title: "Toaster"})
+  var item2a =  await Item.create({title: "Coffee Machine"})
+  var item3a =  await Item.create({title: "Dishwasher"})
 
-  var item1b =	await Item.create({title: "Laptop", description: "Hey we should all make an open source laptop"})
-  var item2b =	await Item.create({title: "Arduino", description: "Hey we should all make an open source arduino"})
-  var item3b =	await Item.create({title: "Smartphone", description: "Hey we should all make an open source smartphone"})
-  var item4b =	await Item.create({title: "Drone", description: "Hey we should all make an open source drone"})
+  var item1b =  await Item.create({title: "Laptop"})
+  var item2b =  await Item.create({title: "Arduino"})
+  var item3b =  await Item.create({title: "Smartphone"})
+  var item4b =  await Item.create({title: "Drone"})
 
-  var item1c =	await Item.create({title: "Chair", description: "Hey we should all make an open source chair"})
-  var item2c =	await Item.create({title: "Couch", description: "Hey we should all make an open source couch"})
-  var item3c =	await Item.create({title: "Coffee Table", description: "Hey we should all make an open source coffee table"})
-  var item4c =	await Item.create({title: "Standing Lamp", description: "Hey we should all make an open source standing lamp"})
+  var item1c =  await Item.create({title: "Chair"})
+  var item2c =  await Item.create({title: "Couch"})
+  var item3c =  await Item.create({title: "Coffee Table"})
+  var item4c =  await Item.create({title: "Standing Lamp"})
 
-  var item1d =	await Item.create({title: "Power Screwdriver", description: "Hey we should all make an open source power screwdriver"})
-  var item2d =	await Item.create({title: "CNC Machine", description: "Hey we should all make an open source CNC Machine"})
+  var item1d =  await Item.create({title: "Power Screwdriver"})
+  var item2d =  await Item.create({title: "CNC Machine"})
 
   await item1a.addCategory(home_appliance_category)
   await item2a.addCategory(home_appliance_category)
@@ -77,48 +75,48 @@ async function seed() {
 
   var projects = []
   for (let item of items){
-  	var proj1 = await Project.create({title:item.title+randString("project title "), description: randString("project description "), color:randColor(), version_control_url:randString("https://www.")+".com"})
-  	var proj2 = await Project.create({title:item.title+randString("project title "), description: randString("project description "), color:randColor(), version_control_url:randString("https://www.")+".com"})
-  	var proj3 = await Project.create({title:item.title+randString("project title "), description: randString("project description "), color:randColor(), version_control_url:randString("https://www.")+".com"})
-  	await proj1.setItem(item)
-  	await proj2.setItem(item)
-  	await proj3.setItem(item)
-  	await proj1.setUser(users[0])
-  	await proj2.setUser(users[1])
-  	await proj3.setUser(users[0])
-  	projects = projects.concat([proj1, proj2, proj3])
+    var proj1 = await Project.create({title:item.title+randString("project title "), description: randString("project description "), color:randColor(), version_control_url:randString("https://www.")+".com"})
+    var proj2 = await Project.create({title:item.title+randString("project title "), description: randString("project description "), color:randColor(), version_control_url:randString("https://www.")+".com"})
+    var proj3 = await Project.create({title:item.title+randString("project title "), description: randString("project description "), color:randColor(), version_control_url:randString("https://www.")+".com"})
+    await proj1.setItem(item)
+    await proj2.setItem(item)
+    await proj3.setItem(item)
+    await proj1.setUser(users[0])
+    await proj2.setUser(users[1])
+    await proj3.setUser(users[0])
+    projects = projects.concat([proj1, proj2, proj3])
   }
 
   console.log('seeded projects')
   var comments = []
   for (let project of projects){
-	  var comm1 = await Comment.create({ project:project, user:users[0], content:randString("random comment by user")})
-	  var comm2 = await Comment.create({ project:project, user:users[1], content:randString("random comment by user")})
-	  var comm3 = await Comment.create({ project:project, user:users[0], content:randString("random comment by user")})
-	  await comm1.setProject(project)
-	  await comm2.setProject(project)
-	  await comm3.setProject(project)
-	  await comm1.setUser(users[0])
-	  await comm2.setUser(users[1])
-	  await comm3.setUser(users[0])
-	  comments = comments.concat([comm1, comm2, comm3])
+    var comm1 = await Comment.create({ project:project, user:users[0], content:randString("random comment by user")})
+    var comm2 = await Comment.create({ project:project, user:users[1], content:randString("random comment by user")})
+    var comm3 = await Comment.create({ project:project, user:users[0], content:randString("random comment by user")})
+    await comm1.setProject(project)
+    await comm2.setProject(project)
+    await comm3.setProject(project)
+    await comm1.setUser(users[0])
+    await comm2.setUser(users[1])
+    await comm3.setUser(users[0])
+    comments = comments.concat([comm1, comm2, comm3])
   }
 
   console.log('seeded comments')
 
   for (let project of projects){
-  	var vote1 = await Vote.create({ dir: 1 })
-  	var vote2 = await Vote.create({ dir: 1  })
-  	var vote3 = await Vote.create({ dir: -1  })
-  	var vote4 = await Vote.create({ dir: 1  })
-  	await vote1.setProject(project)
-  	await vote2.setProject(project)
-  	await vote3.setProject(project)
-  	await vote4.setProject(project)
-  	await vote1.setUser(users[0])
-  	await vote2.setUser(users[1])
-  	await vote3.setUser(users[2])
-  	await vote4.setUser(users[3])
+    var vote1 = await Vote.create({ dir: 1 })
+    var vote2 = await Vote.create({ dir: 1  })
+    var vote3 = await Vote.create({ dir: -1  })
+    var vote4 = await Vote.create({ dir: 1  })
+    await vote1.setProject(project)
+    await vote2.setProject(project)
+    await vote3.setProject(project)
+    await vote4.setProject(project)
+    await vote1.setUser(users[0])
+    await vote2.setUser(users[1])
+    await vote3.setUser(users[2])
+    await vote4.setUser(users[3])
   }
 
   console.log('seeded votes')

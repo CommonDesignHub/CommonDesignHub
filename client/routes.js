@@ -9,6 +9,7 @@ import CreateProject from './components/create-project'
 import CreateInitiative from './components/create-initiative'
 import Catalog from './components/catalog'
 import Projects from './components/projects'
+import SingleProject from './components/single-project'
 
 /**
  * COMPONENT
@@ -29,7 +30,8 @@ class Routes extends Component {
         <Route path="/fileupload" component={FileUpload} />
         <Route path="/create-initiative" render={ (props) => (<CreateInitiative categories={this.props.categories} c_loader={this.props.categories_loader} c_error={this.props.categories_error}/>) }/>
         <Route path="/create-project" render={ (props) => (<CreateProject categories={this.props.categories} c_loader={this.props.categories_loader} c_error={this.props.categories_error}/>) }/>
-        <Route path="/items/:id" render={ (props) => (<Projects {...props} test="test" user={this.props.user}/>) }/>
+        <Route path="/items/:id" render={ (props) => (<Projects {...props} user={this.props.user}/>) }/>
+        <Route path="/projects/:id" render={ (props) => (<SingleProject {...props} user={this.props.user}/>) }/>
 
         {isLoggedIn && (
           <Switch>

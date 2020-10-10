@@ -1,9 +1,9 @@
 const router = require('express').Router()
-const {Project, Category, Item} = require('../db/models')
+const {Project, Category, Item, User, Vote, Comment} = require('../db/models')
 module.exports = router
 
 var randColor = ()=>{
-  const d = 175
+  const d = 185
   const a = Math.ceil(Math.random() * 80 + d)
   const b = Math.ceil(Math.random() * 80 + d)
   const c = Math.ceil(Math.random() * 80 + d)
@@ -14,6 +14,33 @@ var randColor = ()=>{
 router.get('/', async (req, res, next) => {
   try {
     const projects = await Project.findAll()
+    res.json(projects)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/newcreation', async (req, res, next) => {
+  try {
+    const projects = await Project.findAll({limit:10, order:[['createdAt', 'DESC']]})
+    res.json(projects)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/newvote', async (req, res, next) => {
+  try {
+    const projects = await Project.findAll({limit:10, order:[['createdAt', 'DESC']]})
+    res.json(projects)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/newcomment', async (req, res, next) => {
+  try {
+    const projects = await Project.findAll({limit:10, order:[['createdAt', 'DESC']]})
     res.json(projects)
   } catch (err) {
     next(err)
@@ -52,7 +79,7 @@ router.post('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   var id_param = req.params.id
   try {
-    const projects = await Project.findByPk(id_param)
+    const projects = await Project.findByPk(id_param, {include: [Item, User]})
     res.json(projects)
   } catch (err) {
     next(err)
