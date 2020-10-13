@@ -117,37 +117,38 @@ class Catalog extends Component {
 
       })
     })
-console.log(this.state.item)
+    var item = this.state.item
     return (
       <React.Fragment>
-        {this.state.item.id?(
-          <div>
-            <p>{this.state.item.title}</p>
-            <br/>
-            <p>Projects List</p>
-            <div className="project-container">
-              {
-                list.length
-                ?list.map(project => (
-                  <div className="project-bar" style={{backgroundColor: project.color, width:"100%"}} key={project.id} id={project.id}>
-                    <div style={{width:"5em"}}>
-                      <div className="vote-btn-container">
-                        <button id={`up${project.id}`} className="upvote" onClick={this.voteProject.bind(this, project.id, 1)}>Up</button>
-                        <button id={`dn${project.id}`} className="downvote" onClick={this.voteProject.bind(this, project.id, -1)}>Dn</button>
+        {list.length?<div>
+          {this.state.item.id?(
+            <div>
+              <p>{item.title}</p>
+              <br/>
+              <p>Projects List</p>
+              <div className="project-container">
+                {
+                  list.length
+                  ?list.map(project => (
+                    <div className="project-bar" style={{backgroundColor: project.color, width:"100%"}} key={project.id} id={project.id}>
+                      <div style={{width:"5em"}}>
+                        <div className="vote-btn-container">
+                          <button id={`up${project.id}`} className="upvote" onClick={this.voteProject.bind(this, project.id, 1)}>Up</button>
+                          <button id={`dn${project.id}`} className="downvote" onClick={this.voteProject.bind(this, project.id, -1)}>Dn</button>
+                        </div>
+                        <p>Likes: {project.voteCount}</p>
                       </div>
-                      <p>Likes: {project.voteCount}</p>
+                      <div style={{width:"100%"}}>
+                        <Link to={`/projects/${project.id}`} style={{textAlign:"center", marginRight:"150px"}}>{project.title}</Link>
+                      </div>
+                      <div style= {{display:"inline-flex"}}><img style={{border:"1px solid #ddd", borderRadius:"4px", padding:"5px", width:"100px", margin:"10px"}} src={project.image_url?project.image_url:"/assets/placeholder.png"}></img></div>
                     </div>
-                    <div style={{width:"100%"}}>
-                      <Link to={`/projects/${project.id}`} style={{textAlign:"center", marginRight:"150px"}}>{project.title}</Link>
-                    </div>
-                    <div style= {{display:"inline-flex"}}><img style={{border:"1px solid #ddd", borderRadius:"4px", padding:"5px", width:"100px", margin:"10px"}} src={project.image_url?project.image_url:"/assets/placeholder.png"}></img></div>
-                  </div>
-                ))
-                :null
-              }
+                  ))
+                  :null
+                }
+              </div>
             </div>
-          </div>
-        ):null}
+          ):null}
           <br/>
           <br/>
           <br/>
@@ -164,6 +165,16 @@ console.log(this.state.item)
           />
           <button type="submit">Submit</button>
         </form>
+                  <br/>
+          <br/>
+          <br/>
+          {item.comments && item.comments.map((comment, i)=>{
+            return <div key = {`c${i}`} style={{padding:"5px", border:"1px solid black", backgroundColor:"whitesmoke"}}>
+              <p>{comment.user.email}: {comment.content}</p>
+              {comment.image_url?<img style={{height:"100px", width:"100px"}} src={comment.image_url}></img>:null}
+            </div>
+          })}
+          </div>:null}
       </React.Fragment>
 
     )

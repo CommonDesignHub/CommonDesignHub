@@ -4,16 +4,16 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
 
+          // <Link to="/create-project">Add Project</Link>
+          // <Link to="/create-initiative">Add Initiative</Link>
 const Navbar = ({handleClick, isLoggedIn}) => (
   <div>
     <nav>
       {isLoggedIn ? (
         <div>
           {/* The navbar will show these links after you log in */}
-          <Link to="/home">CDH</Link>
+          <Link to="/home"><img src="/assets/logo.png"></img></Link>
           <Link to="/catalog">Catalog</Link>
-          <Link to="/create-project">Add Project</Link>
-          <Link to="/create-initiative">Add Initiative</Link>
           <a href="#" onClick={handleClick}>
             Logout
           </a>

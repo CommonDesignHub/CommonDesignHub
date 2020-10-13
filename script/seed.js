@@ -41,7 +41,7 @@ async function seed() {
   var item3a =  await Item.create({title: "Dishwasher"})
 
   var item1b =  await Item.create({title: "Laptop"})
-  var item2b =  await Item.create({title: "Arduino"})
+  var item2b =  await Item.create({title: "Microcontroller"})
   var item3b =  await Item.create({title: "Smartphone"})
   var item4b =  await Item.create({title: "Drone"})
 

@@ -20,27 +20,9 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/newcreation', async (req, res, next) => {
+router.get('/latest', async (req, res, next) => {
   try {
-    const projects = await Project.findAll({limit:10, order:[['createdAt', 'DESC']]})
-    res.json(projects)
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.get('/newvote', async (req, res, next) => {
-  try {
-    const projects = await Project.findAll({limit:10, order:[['createdAt', 'DESC']]})
-    res.json(projects)
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.get('/newcomment', async (req, res, next) => {
-  try {
-    const projects = await Project.findAll({limit:10, order:[['createdAt', 'DESC']]})
+    const projects = await Project.findAll({limit:6, order:[['createdAt', 'DESC']], include:[User, Item]})
     res.json(projects)
   } catch (err) {
     next(err)
@@ -91,7 +73,7 @@ router.post('/:id/comment', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   var id_param = req.params.id
   try {
-    const projects = await Project.findByPk(id_param, {include: [Item, User, Comment]})
+    const projects = await Project.findByPk(id_param, {include: [{model: Comment, include:[User]}, Item, User]})
     res.json(projects)
   } catch (err) {
     next(err)

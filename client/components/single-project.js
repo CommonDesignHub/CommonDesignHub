@@ -65,56 +65,43 @@ class SingleProject extends Component {
       })
   }
 
-  onSubmit = async (e)=>{
-    e.preventDefault()
-
-    var image_url
-    if(this.state.images.length){
-      const formData = new FormData()
-
-      Array.from(this.state.images).forEach(image => {
-        formData.append('files', image)
-      })
-      var res = await axios.post(`http://localhost:1337/api/upload`, formData, {
-        headers: {'Content-Type': 'multipart/form-data'}
-      })
-      var image_url = res.data.path
-    }
-
-    var comment_text = this.state.comment
-    var comment = {image_url, project_id:this.state.project.id}
-    axios.post(`http://localhost:1337/api/comment`, comment)
-    .then(()=>{})
-    .catch(()=>{})
-  }
-
   render() {
     var project = this.state.project
-    console.log(project)
     return (
-      <div>
-        <div style={{backgroundColor:project.color}}>
-          {project.item?<h3>{project.item.title} Open Source Project</h3>:null}
-          <p>Title - {project.title}</p>
-          <img src={project.image_url}></img>
-          <p>Version Control URL - <a href={project.version_control_url}>{project.version_control_url}</a></p>
-          <p>Description - {project.description}</p>
-           {project.user?<p>Submitted by: {project.user.email}</p>:null}
-          <br/><br/>
-        </div>
-        <form onSubmit={this.submitComment}>
-          <p>Submit a comment</p>
-          <textarea onChange={this.commentTextareaOnchange}></textarea>
-          <p>Attach an image to comment</p>
-          <input
-            type="file"
-            name="files"
-            onChange={this.onImageChange}
-            alt="image"
-          />
-          <button type="submit">Submit</button>
-        </form>
-      </div>
+      <React.Fragment>
+        {project.title?
+          <div>
+            <div style={{backgroundColor:project.color}}>
+              {project.item?<h3>{project.item.title} Open Source Project</h3>:null}
+              <p>Title - {project.title}</p>
+              <img src={project.image_url}></img>
+              <p>Version Control URL - <a href={project.version_control_url}>{project.version_control_url}</a></p>
+              <p>Description - {project.description}</p>
+               {project.user?<p>Submitted by: {project.user.email}</p>:null}
+              <br/><br/>
+            </div>
+            <form onSubmit={this.submitComment}>
+              <p>Submit a comment</p>
+              <textarea onChange={this.commentTextareaOnchange}></textarea>
+              <p>Attach an image to comment</p>
+              <input
+                type="file"
+                name="files"
+                onChange={this.onImageChange}
+                alt="image"
+              />
+              <button type="submit">Submit</button>
+            </form>
+            {project.comments && project.comments.map((comment, i)=>{
+              return <div key = {`c${i}`} style={{padding:"5px", border:"1px solid black", backgroundColor:"whitesmoke"}}>
+                <p>{comment.user.email}:</p>
+                <p>{comment.content}</p>
+                {comment.image_url?<img style={{height:"100px", width:"100px"}} src={comment.image_url}></img>:null}
+              </div>
+            })}
+          </div>
+        :null}
+      </React.Fragment>
     )
   }
 }

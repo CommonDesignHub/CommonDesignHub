@@ -32,6 +32,7 @@ class Catalog extends Component {
             })}
           </ul>
           :null}
+          <br/><br/><br/>
       </div>
     )
   }
