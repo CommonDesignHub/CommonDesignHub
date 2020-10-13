@@ -7,18 +7,60 @@ class Catalog extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {item:{}, projects:[]}
+    this.state = {
+      item:{},
+      projects:[],
+      images:[],
+      comment:""
+    }
   }
 
   componentDidMount(){
     this.getItem()
   }
 
+  onImageChange = event => {
+    this.setState({
+      images: event.target.files
+    })
+  }
+
+  submitComment = async (e)=>{
+    e.preventDefault()
+    var payload = {
+      content: this.state.comment
+    }
+    if(this.state.images.length){
+      const formData = new FormData()
+
+      Array.from(this.state.images).forEach(image => {
+        formData.append('files', image)
+      })
+      var res = await axios.post(`http://localhost:1337/api/upload`, formData, {
+        headers: {'Content-Type': 'multipart/form-data'}
+      })
+      var image_url = res.data.path
+      payload.image_url="/"+image_url
+    }
+
+    axios.post(`/api/item/${this.state.item.id}/comment`, payload)
+      .then(res => {
+        let id = res.data.id
+        this.getItem()
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
+  commentTextareaOnchange = (e) => {
+    this.setState({comment: e.target.value})
+  }
+
   getItem = (e)=>{
     var id = this.props.match.params.id
     axios.get(`/api/item/${id}`)
     .then((ret)=>{
-
       let list = ret.data.projects
       list.map((project) => {
         project.voteCount = 0
@@ -30,12 +72,9 @@ class Catalog extends Component {
           if (vote.dir) {
             project.voteCount+=parseInt(vote.dir)
           }
-
         })
       })
       list = list.sort((a, b) => b.priority-a.priority)
-
-
       this.setState({item: ret.data, projects:list})
     })
     .catch(()=>{})
@@ -78,7 +117,7 @@ class Catalog extends Component {
 
       })
     })
-
+console.log(this.state.item)
     return (
       <React.Fragment>
         {this.state.item.id?(
@@ -109,11 +148,22 @@ class Catalog extends Component {
             </div>
           </div>
         ):null}
-        <div>
+          <br/>
+          <br/>
+          <br/>
+
+        <form onSubmit={this.submitComment}>
           <p>Submit a comment</p>
-          <textarea></textarea>
-          <p>Attach an image</p>
-        </div>
+          <textarea onChange={this.commentTextareaOnchange}></textarea>
+          <p>Attach an image to comment</p>
+          <input
+            type="file"
+            name="files"
+            onChange={this.onImageChange}
+            alt="image"
+          />
+          <button type="submit">Submit</button>
+        </form>
       </React.Fragment>
 
     )
@@ -122,7 +172,7 @@ class Catalog extends Component {
 
 export default Catalog
 
-/**
+/*
  * PROP TYPES
  */
 Catalog.propTypes = {}

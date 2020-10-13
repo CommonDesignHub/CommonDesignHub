@@ -51,6 +51,7 @@ router.post('/', async (req, res, next) => {
   try {
     var {categoryId, itemId, alternateDepartmentName, alternateItemName} = req.body
     var payload = req.body
+    payload.userId = req.user.id
 
     var category
     if(alternateDepartmentName && categoryId==="OTHER"){
@@ -68,9 +69,20 @@ router.post('/', async (req, res, next) => {
     }
 
     payload.color = randColor()
-    console.log(payload)
     const project = await Project.create(payload)
     res.json(project)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.post('/:id/comment', async (req, res, next) => {
+  var projectId = req.params.id
+  var userId = req.user.id
+  try {
+    const comment = await Comment.create({userId, projectId, content:req.body.content, image_url:req.body.image_url})
+
+    res.status(204).json(comment)
   } catch (err) {
     next(err)
   }
@@ -79,7 +91,7 @@ router.post('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   var id_param = req.params.id
   try {
-    const projects = await Project.findByPk(id_param, {include: [Item, User]})
+    const projects = await Project.findByPk(id_param, {include: [Item, User, Comment]})
     res.json(projects)
   } catch (err) {
     next(err)

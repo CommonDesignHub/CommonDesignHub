@@ -54,8 +54,6 @@ class CreateProject extends Component {
       .post(`http://localhost:1337/api/project`, payload)
       .then(res => {
         let id = res.data.id
-        // let history = useHistory()
-        // window.location.href = `/projects/${id}`;
         this.props.history.push(`/projects/${id}`)
       })
       .catch(err => {
