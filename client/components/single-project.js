@@ -29,7 +29,7 @@ class SingleProject extends Component {
     })
   }
 
-  commentTextareaOnchange = (e) => {
+  commentTextareaOnchange = (e) => {w
     this.setState({comment: e.target.value})
   }
 
@@ -62,16 +62,15 @@ class SingleProject extends Component {
       <div style={{backgroundColor:project.color}}>
         {project.item?<h3>{project.item.title} Open Source Project</h3>:null}
         <p>Title - {project.title}</p>
-        <p>Description - {project.description}</p>
         <img src={project.image_url}></img>
-        <p></p>
         <p>Version Control URL - <a href={project.version_control_url}>{project.version_control_url}</a></p>
+        <p>Description - {project.description}</p>
          {project.user?<p>Submitted by: {project.user.email}</p>:null}
         <br/><br/>
         <form onSubmit={this.onSubmit}>
           <p>Submit a comment</p>
           <textarea onChange={this.commentTextareaOnchange}></textarea>
-          <p>Attach an image for thumbnail</p>
+          <p>Attach an image to comment</p>
           <input
             type="file"
             name="files"
