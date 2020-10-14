@@ -38,8 +38,13 @@ class CreateProject extends Component {
       alternateItemName:alternateItemName,
     }
 
-    if(!payload.title || !payload.description || !payload.repoUrl ){
-      this.setState({error: "Title, description and repository url must be filled"})
+    if(!this.state.images.length || !payload.title || !payload.description || !payload.version_control_url ){
+      this.setState({error: "Title, description, repository url and thumbnail image must be provided"})
+      return
+    }
+
+    if(!payload.categoryId || !payload.itemId || (payload.categoryId==="OTHER" && !payload.alternateDepartmentName) || (payload.itemId==="OTHER" && !payload.alternateItemName) ){
+      this.setState({error: "Department and initiative must be selected"})
       return
     }
 
@@ -165,10 +170,10 @@ class CreateProject extends Component {
             <option value="OTHER">Other</option>
 
           </select>
-          <br/><br/>
+          <br/>
 
           <div style={{display: this.state.newItemDisabled?"none":"block"}}>
-            <label htmlFor="newitem">Item</label>
+            <label htmlFor="newitem">Initiative</label>
             <input onChange={(e)=>{this.onChange(e, "alternateItemName")}} type="text" disabled={this.state.newItemDisabled} id="newitem" name="newitem"/>
           </div>
           <br/>
@@ -180,9 +185,9 @@ class CreateProject extends Component {
             alt="image"
           />
           <br/>
+          <br/><br/>
           <button type="submit">Submit</button>
           {this.state.error?<p style={{color:"red"}}>{this.state.error}</p>:null}
-          <br/><br/>
           <br/><br/>
 
         </form>

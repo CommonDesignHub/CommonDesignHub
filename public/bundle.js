@@ -539,7 +539,7 @@ var CreateInitiative = /*#__PURE__*/function (_Component) {
         initiative_name: initiativeName
       };
 
-      if (isNaN(payload.category_id) && !payload.category_name || !payload.initiative_name) {
+      if (!payload.category_id || isNaN(payload.category_id) && !payload.category_name || !payload.initiative_name) {
         _this.setState({
           error: "Department and initiative must be selected or filled"
         });
@@ -722,20 +722,32 @@ var CreateProject = /*#__PURE__*/function (_Component) {
                   alternateItemName: alternateItemName
                 };
 
-                if (!(!payload.title || !payload.description || !payload.repoUrl)) {
+                if (!(!_this.state.images.length || !payload.title || !payload.description || !payload.version_control_url)) {
                   _context.next = 6;
                   break;
                 }
 
                 _this.setState({
-                  error: "Title, description and repository url must be filled"
+                  error: "Title, description, repository url and thumbnail image must be provided"
                 });
 
                 return _context.abrupt("return");
 
               case 6:
+                if (!(!payload.categoryId || !payload.itemId || payload.categoryId === "OTHER" && !payload.alternateDepartmentName || payload.itemId === "OTHER" && !payload.alternateItemName)) {
+                  _context.next = 9;
+                  break;
+                }
+
+                _this.setState({
+                  error: "Department and initiative must be selected"
+                });
+
+                return _context.abrupt("return");
+
+              case 9:
                 if (!_this.state.images.length) {
-                  _context.next = 14;
+                  _context.next = 17;
                   break;
                 }
 
@@ -743,19 +755,19 @@ var CreateProject = /*#__PURE__*/function (_Component) {
                 Array.from(_this.state.images).forEach(function (image) {
                   formData.append('files', image);
                 });
-                _context.next = 11;
+                _context.next = 14;
                 return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("http://localhost:1337/api/upload", formData, {
                   headers: {
                     'Content-Type': 'multipart/form-data'
                   }
                 });
 
-              case 11:
+              case 14:
                 res = _context.sent;
                 image_url = res.data.path;
                 payload.image_url = "/" + image_url;
 
-              case 14:
+              case 17:
                 axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("http://localhost:1337/api/project", payload).then(function (res) {
                   var id = res.data.id;
 
@@ -764,7 +776,7 @@ var CreateProject = /*#__PURE__*/function (_Component) {
                   console.log(err);
                 });
 
-              case 15:
+              case 18:
               case "end":
                 return _context.stop();
             }
@@ -951,13 +963,13 @@ var CreateProject = /*#__PURE__*/function (_Component) {
         }, category.title);
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
         value: "OTHER"
-      }, "Other")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "Other")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {
           display: this.state.newItemDisabled ? "none" : "block"
         }
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
         htmlFor: "newitem"
-      }, "Item"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }, "Initiative"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         onChange: function onChange(e) {
           _this2.onChange(e, "alternateItemName");
         },
@@ -970,13 +982,13 @@ var CreateProject = /*#__PURE__*/function (_Component) {
         name: "files",
         onChange: this.onImageChange,
         alt: "image"
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "submit"
       }, "Submit"), this.state.error ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
         style: {
           color: "red"
         }
-      }, this.state.error) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null)));
+      }, this.state.error) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null)));
     }
   }]);
 
@@ -1861,7 +1873,6 @@ var UserHome = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      console.log("test");
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "The objective of Common Design Hub is to pool together open source physical design projects in the form of a catalog and provide a place for makers to collaborate."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Latest Projects"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {
           width: "100%",
@@ -2040,7 +2051,6 @@ var Routes = /*#__PURE__*/function (_Component) {
       var _this = this;
 
       var isLoggedIn = this.props.isLoggedIn;
-      console.log(isLoggedIn);
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/home",
         component: _components__WEBPACK_IMPORTED_MODULE_4__["UserHome"]

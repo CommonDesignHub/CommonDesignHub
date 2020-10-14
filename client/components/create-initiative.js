@@ -46,7 +46,7 @@ class CreateInitiative extends Component {
       initiative_name:initiativeName,
     }
 
-    if( (isNaN(payload.category_id) && !payload.category_name) || !payload.initiative_name ){
+    if(!payload.category_id || (isNaN(payload.category_id) && !payload.category_name) || !payload.initiative_name ){
       this.setState({error:"Department and initiative must be selected or filled"})
       return
     }
