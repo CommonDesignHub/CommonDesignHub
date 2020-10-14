@@ -25,6 +25,7 @@ class UserHome extends React.Component {
   }
 
   render(){
+    console.log("test")
     return (
       <div>
         <p>The objective of Common Design Hub is to pool together open source physical design projects

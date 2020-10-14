@@ -1861,6 +1861,7 @@ var UserHome = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
+      console.log("test");
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "The objective of Common Design Hub is to pool together open source physical design projects in the form of a catalog and provide a place for makers to collaborate."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Latest Projects"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {
           width: "100%",
@@ -2039,6 +2040,7 @@ var Routes = /*#__PURE__*/function (_Component) {
       var _this = this;
 
       var isLoggedIn = this.props.isLoggedIn;
+      console.log(isLoggedIn);
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/home",
         component: _components__WEBPACK_IMPORTED_MODULE_4__["UserHome"]
@@ -2093,6 +2095,8 @@ var Routes = /*#__PURE__*/function (_Component) {
             c_error: _this.props.categories_error
           });
         }
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+        component: _components__WEBPACK_IMPORTED_MODULE_4__["UserHome"]
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         component: _components__WEBPACK_IMPORTED_MODULE_4__["UserHome"]
       }));
