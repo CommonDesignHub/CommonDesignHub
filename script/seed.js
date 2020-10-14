@@ -75,9 +75,9 @@ async function seed() {
 
   var projects = []
   for (let item of items){
-    var proj1 = await Project.create({title:item.title+randString("project title "), description: randString("project description "), color:randColor(), version_control_url:randString("https://www.")+".com"})
-    var proj2 = await Project.create({title:item.title+randString("project title "), description: randString("project description "), color:randColor(), version_control_url:randString("https://www.")+".com"})
-    var proj3 = await Project.create({title:item.title+randString("project title "), description: randString("project description "), color:randColor(), version_control_url:randString("https://www.")+".com"})
+    var proj1 = await Project.create({title:item.title+randString("project title "), image_url:'/assets/placeholder.png', description: randString("project description "), color:randColor(), version_control_url:randString("https://www.")+".com"})
+    var proj2 = await Project.create({title:item.title+randString("project title "), image_url:'/assets/placeholder.png', description: randString("project description "), color:randColor(), version_control_url:randString("https://www.")+".com"})
+    var proj3 = await Project.create({title:item.title+randString("project title "), image_url:'/assets/placeholder.png', description: randString("project description "), color:randColor(), version_control_url:randString("https://www.")+".com"})
     await proj1.setItem(item)
     await proj2.setItem(item)
     await proj3.setItem(item)

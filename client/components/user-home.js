@@ -2,15 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import axios from 'axios'
-/**
- * COMPONENT
- */
+
 class UserHome extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      email: this.props.email,
       projects: []
     }
   }
@@ -30,8 +27,6 @@ class UserHome extends React.Component {
   render(){
     return (
       <div>
-        <h2>Welcome, {this.state.email}</h2>
-
         <p>The objective of Common Design Hub is to pool together open source physical design projects
         in the form of a catalog and provide a place for makers to collaborate.</p>
         
@@ -44,11 +39,11 @@ class UserHome extends React.Component {
             onClick={()=>{this.props.history.push(`/projects/${project.id}`)}}>
               <p>{project.item.title}</p>
               <p>{project.title}</p>
+              <div style={{width:"100%"}}><img src={project.image_url} style={{maxHeight:"100%", maxWidth:"100%"}}></img></div>
               <p>By: {project.user.username}</p>
             </div> 
           })}
         </div>
-        <br/>
         <br/>
         <br/>
 
@@ -57,20 +52,4 @@ class UserHome extends React.Component {
   }
 }
 
-/**
- * CONTAINER
- */
-const mapState = state => {
-  return {
-    email: state.user.email
-  }
-}
-
-export default connect(mapState)(UserHome)
-
-/**
- * PROP TYPES
- */
-UserHome.propTypes = {
-  email: PropTypes.string
-}
+export default UserHome;
