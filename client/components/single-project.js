@@ -77,9 +77,10 @@ class SingleProject extends Component {
               <img src={project.image_url}></img>
               <p>Version Control URL - <a href={project.version_control_url}>{project.version_control_url}</a></p>
               <p>Description - {project.description}</p>
-               {project.user?<p>Submitted by: {project.user.email}</p>:null}
+               {project.user?<p>Submitted by: {project.user.username}</p>:null}
               <br/><br/>
             </div>
+            {this.props.user.id? 
             <form onSubmit={this.submitComment}>
               <p>Submit a comment</p>
               <textarea onChange={this.commentTextareaOnchange}></textarea>
@@ -92,9 +93,11 @@ class SingleProject extends Component {
               />
               <button type="submit">Submit</button>
             </form>
+            :null}
+            {console.log(this.props.user.id)}
             {project.comments && project.comments.map((comment, i)=>{
               return <div key = {`c${i}`} style={{padding:"5px", border:"1px solid black", backgroundColor:"whitesmoke"}}>
-                <p>{comment.user.email}:</p>
+                <p>{comment.user.username}:</p>
                 <p>{comment.content}</p>
                 {comment.image_url?<img style={{height:"100px", width:"100px"}} src={comment.image_url}></img>:null}
               </div>

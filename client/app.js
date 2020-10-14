@@ -35,9 +35,7 @@ class App extends Component {
   render(){
     return (
       <div>
-        <Navbar
-
-         />
+        <Navbar/>
         <Routes
           get_catalog={this.getCatalog}
           categories={this.state.categories}

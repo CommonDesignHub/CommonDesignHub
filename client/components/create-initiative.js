@@ -59,7 +59,11 @@ class CreateInitiative extends Component {
 
   render() {
     var items = this.state.selectedCategoryId && !isNaN(this.state.selectedCategoryId)?this.props.categories.find((category)=>{return category.id==this.state.selectedCategoryId}).items:[]
-
+    if(!this.props.user.id){
+      return(
+        <div><p>Please login to submit initiatives.</p></div>
+      )
+    }
     return (
       <React.Fragment>
         <div>

@@ -152,25 +152,26 @@ class Catalog extends Component {
           <br/>
           <br/>
           <br/>
-
-        <form onSubmit={this.submitComment}>
-          <p>Submit a comment</p>
-          <textarea onChange={this.commentTextareaOnchange}></textarea>
-          <p>Attach an image to comment</p>
-          <input
-            type="file"
-            name="files"
-            onChange={this.onImageChange}
-            alt="image"
-          />
-          <button type="submit">Submit</button>
-        </form>
-                  <br/>
+          {this.props.user.id?
+          <form onSubmit={this.submitComment}>
+            <p>Submit a comment</p>
+            <textarea onChange={this.commentTextareaOnchange}></textarea>
+            <p>Attach an image to comment</p>
+            <input
+              type="file"
+              name="files"
+              onChange={this.onImageChange}
+              alt="image"
+            />
+            <button type="submit">Submit</button>
+          </form>
+          :null}
+          <br/>
           <br/>
           <br/>
           {item.comments && item.comments.map((comment, i)=>{
             return <div key = {`c${i}`} style={{padding:"5px", border:"1px solid black", backgroundColor:"whitesmoke"}}>
-              <p>{comment.user.email}: {comment.content}</p>
+              <p>{comment.user.username}: {comment.content}</p>
               {comment.image_url?<img style={{height:"100px", width:"100px"}} src={comment.image_url}></img>:null}
             </div>
           })}

@@ -24,19 +24,18 @@ class Routes extends Component {
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
+        <Route path="/home" component={UserHome} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route path="/catalog" render={ (props) => (<Catalog categories={this.props.categories} get_catalog={this.props.get_catalog} c_loader={this.props.categories_loader} c_error={this.props.categories_error}/>) }/>
-        <Route path="/fileupload" component={FileUpload} />
-        <Route path="/create-initiative" render={ (props) => (<CreateInitiative categories={this.props.categories} c_loader={this.props.categories_loader} c_error={this.props.categories_error}/>) }/>
-        <Route path="/create-project" render={ (props) => (<CreateProject categories={this.props.categories} c_loader={this.props.categories_loader} c_error={this.props.categories_error}/>) }/>
+        <Route path="/catalog" render={ (props) => (<Catalog user={this.props.user} categories={this.props.categories} get_catalog={this.props.get_catalog} c_loader={this.props.categories_loader} c_error={this.props.categories_error}/>) }/>
         <Route path="/items/:id" render={ (props) => (<Projects {...props} user={this.props.user}/>) }/>
         <Route path="/projects/:id" render={ (props) => (<SingleProject {...props} user={this.props.user}/>) }/>
 
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
-            <Route path="/home" component={UserHome} />
+            <Route path="/create-initiative" render={ (props) => (<CreateInitiative user={this.props.user} categories={this.props.categories} c_loader={this.props.categories_loader} c_error={this.props.categories_error}/>) }/>
+            <Route path="/create-project" render={ (props) => (<CreateProject user={this.props.user} categories={this.props.categories} c_loader={this.props.categories_loader} c_error={this.props.categories_error}/>) }/>
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}

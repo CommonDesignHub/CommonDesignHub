@@ -108,6 +108,12 @@ class CreateProject extends Component {
 
   render() {
     var items = this.state.selectedDepartmentId && !isNaN(this.state.selectedDepartmentId)?this.props.categories.find((category)=>{return category.id==this.state.selectedDepartmentId}).items:[]
+    if(!this.props.user.id){
+      return(
+        <div><p>Please login to submit projects.</p></div>
+      )
+    }
+
     return (
       <div>
         <h3>Create a Project</h3>

@@ -21,11 +21,11 @@ async function seed() {
   }
 
   const users = await Promise.all([
-    User.create({email: 'will@pix.com', password: '1234'}),
-    User.create({email: 'cody@email.com', password: '123'}),
-    User.create({email: 'murphy@email.com', password: '123'}),
-    User.create({email: 'asdas@email.com', password: '123'}),
-    User.create({email: 'ertert@email.com', password: '123'})
+    User.create({email: 'will@pix.com', username:'wmccrac', password: '1234'}),
+    User.create({email: 'cody@email.com', username:'thrashcody', password: '123'}),
+    User.create({email: 'murphy@email.com', username:'dmurph', password: '123'}),
+    User.create({email: 'asdas@email.com', username:'asdasaa', password: '123'}),
+    User.create({email: 'ertert@email.com', username:'ertyman', password: '123'})
   ])
 
   console.log(`seeded ${users.length} users`)

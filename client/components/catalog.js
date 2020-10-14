@@ -22,7 +22,11 @@ class Catalog extends Component {
 
     return (
       <div>
-        <p>- Want to see more here? Consider adding to the catalog by <Link to="/create-project">submiting a project</Link> or <Link to="/create-initiative">creating an initiative.</Link></p>
+        {this.props.user.id?
+          <p>- Want to see more here? Consider adding to the catalog by <Link to="/create-project">submiting a project</Link> or <Link to="/create-initiative">creating an initiative.</Link></p>
+        :
+          <p>- Want to see more here?  Consider <Link to="/login">logging in</Link> or <Link to="/signup">creating an account</Link> so that you can submit projects and start initiatives.</p>
+        }
         {this.props.categories.length?
           <ul>
             {this.props.categories.map((category, i)=>{
