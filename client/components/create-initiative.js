@@ -46,6 +46,11 @@ class CreateInitiative extends Component {
       initiative_name:initiativeName,
     }
 
+    if( (isNaN(payload.category_id) && !payload.category_name) || !payload.initiative_name ){
+      this.setState({error:"Department and initiative must be selected or filled"})
+      return
+    }
+
     axios
       .post(`http://localhost:1337/api/item`, payload)
       .then(res => {
@@ -90,6 +95,7 @@ class CreateInitiative extends Component {
             <br/>
 
             <button type="submit">Submit</button>
+            {this.state.error?<p style={{color:"red"}}>{this.state.error}</p>:null}
 
           </form>
         </div>

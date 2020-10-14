@@ -538,6 +538,15 @@ var CreateInitiative = /*#__PURE__*/function (_Component) {
         category_name: alternateDepartmentName,
         initiative_name: initiativeName
       };
+
+      if (isNaN(payload.category_id) && !payload.category_name || !payload.initiative_name) {
+        _this.setState({
+          error: "Department and initiative must be selected or filled"
+        });
+
+        return;
+      }
+
       axios__WEBPACK_IMPORTED_MODULE_3___default.a.post("http://localhost:1337/api/item", payload).then(function (res) {
         var id = res.data.id;
 
@@ -612,7 +621,11 @@ var CreateInitiative = /*#__PURE__*/function (_Component) {
         name: "Categorical Item Name (Car, Computer)"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "submit"
-      }, "Submit"))));
+      }, "Submit"), this.state.error ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        style: {
+          color: "red"
+        }
+      }, this.state.error) : null)));
     }
   }]);
 
@@ -709,8 +722,20 @@ var CreateProject = /*#__PURE__*/function (_Component) {
                   alternateItemName: alternateItemName
                 };
 
+                if (!(!payload.title || !payload.description || !payload.repoUrl)) {
+                  _context.next = 6;
+                  break;
+                }
+
+                _this.setState({
+                  error: "Title, description and repository url must be filled"
+                });
+
+                return _context.abrupt("return");
+
+              case 6:
                 if (!_this.state.images.length) {
-                  _context.next = 11;
+                  _context.next = 14;
                   break;
                 }
 
@@ -718,19 +743,19 @@ var CreateProject = /*#__PURE__*/function (_Component) {
                 Array.from(_this.state.images).forEach(function (image) {
                   formData.append('files', image);
                 });
-                _context.next = 8;
+                _context.next = 11;
                 return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("http://localhost:1337/api/upload", formData, {
                   headers: {
                     'Content-Type': 'multipart/form-data'
                   }
                 });
 
-              case 8:
+              case 11:
                 res = _context.sent;
                 image_url = res.data.path;
                 payload.image_url = "/" + image_url;
 
-              case 11:
+              case 14:
                 axios__WEBPACK_IMPORTED_MODULE_2___default.a.post("http://localhost:1337/api/project", payload).then(function (res) {
                   var id = res.data.id;
 
@@ -739,7 +764,7 @@ var CreateProject = /*#__PURE__*/function (_Component) {
                   console.log(err);
                 });
 
-              case 12:
+              case 15:
               case "end":
                 return _context.stop();
             }
@@ -823,7 +848,8 @@ var CreateProject = /*#__PURE__*/function (_Component) {
       projectDescription: "",
       alternateDepartmentName: "",
       alternateItemName: "",
-      images: []
+      images: [],
+      error: ""
     };
     return _this;
   }
@@ -946,7 +972,11 @@ var CreateProject = /*#__PURE__*/function (_Component) {
         alt: "image"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "submit"
-      }, "Submit"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null)));
+      }, "Submit"), this.state.error ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        style: {
+          color: "red"
+        }
+      }, this.state.error) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null)));
     }
   }]);
 
@@ -1257,13 +1287,26 @@ var Catalog = /*#__PURE__*/function (_Component) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                e.preventDefault();
                 payload = {
                   content: _this.state.comment
                 };
 
+                if (_this.state.comment) {
+                  _context.next = 5;
+                  break;
+                }
+
+                e.preventDefault();
+
+                _this.setState({
+                  error: "Please fill out comment text"
+                });
+
+                return _context.abrupt("return");
+
+              case 5:
                 if (!_this.state.images.length) {
-                  _context.next = 10;
+                  _context.next = 13;
                   break;
                 }
 
@@ -1271,19 +1314,19 @@ var Catalog = /*#__PURE__*/function (_Component) {
                 Array.from(_this.state.images).forEach(function (image) {
                   formData.append('files', image);
                 });
-                _context.next = 7;
+                _context.next = 10;
                 return axios__WEBPACK_IMPORTED_MODULE_3___default.a.post("http://localhost:1337/api/upload", formData, {
                   headers: {
                     'Content-Type': 'multipart/form-data'
                   }
                 });
 
-              case 7:
+              case 10:
                 res = _context.sent;
                 image_url = res.data.path;
                 payload.image_url = "/" + image_url;
 
-              case 10:
+              case 13:
                 axios__WEBPACK_IMPORTED_MODULE_3___default.a.post("/api/item/".concat(_this.state.item.id, "/comment"), payload).then(function (res) {
                   var id = res.data.id;
 
@@ -1292,7 +1335,7 @@ var Catalog = /*#__PURE__*/function (_Component) {
                   console.log(err);
                 });
 
-              case 11:
+              case 14:
               case "end":
                 return _context.stop();
             }
@@ -1385,7 +1428,8 @@ var Catalog = /*#__PURE__*/function (_Component) {
       item: {},
       projects: [],
       images: [],
-      comment: ""
+      comment: "",
+      error: ""
     };
     return _this;
   }
@@ -1410,7 +1454,7 @@ var Catalog = /*#__PURE__*/function (_Component) {
         });
       });
       var item = this.state.item;
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, list.length ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.state.item.id ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, item.title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Projects List"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, item.id ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, item.title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Projects List"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "project-container"
       }, list.length ? list.map(function (project) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -1459,7 +1503,7 @@ var Catalog = /*#__PURE__*/function (_Component) {
           },
           src: project.image_url ? project.image_url : "/assets/placeholder.png"
         })));
-      }) : null)) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), this.props.user.id ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+      }) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "It appears there are no projects yet."))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), this.props.user.id ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         onSubmit: this.submitComment
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Submit a comment"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
         onChange: this.commentTextareaOnchange
@@ -1470,7 +1514,11 @@ var Catalog = /*#__PURE__*/function (_Component) {
         alt: "image"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "submit"
-      }, "Submit")) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), item.comments && item.comments.map(function (comment, i) {
+      }, "Submit"), this.state.error ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        style: {
+          color: "red"
+        }
+      }, this.state.error) : null) : null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), item.comments && item.comments.map(function (comment, i) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           key: "c".concat(i),
           style: {
@@ -1590,13 +1638,26 @@ var SingleProject = /*#__PURE__*/function (_Component) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                e.preventDefault();
                 payload = {
                   content: _this.state.comment
                 };
 
+                if (_this.state.comment) {
+                  _context.next = 5;
+                  break;
+                }
+
+                e.preventDefault();
+
+                _this.setState({
+                  error: "Please fill out comment text"
+                });
+
+                return _context.abrupt("return");
+
+              case 5:
                 if (!_this.state.images.length) {
-                  _context.next = 10;
+                  _context.next = 13;
                   break;
                 }
 
@@ -1604,19 +1665,19 @@ var SingleProject = /*#__PURE__*/function (_Component) {
                 Array.from(_this.state.images).forEach(function (image) {
                   formData.append('files', image);
                 });
-                _context.next = 7;
+                _context.next = 10;
                 return axios__WEBPACK_IMPORTED_MODULE_3___default.a.post("http://localhost:1337/api/upload", formData, {
                   headers: {
                     'Content-Type': 'multipart/form-data'
                   }
                 });
 
-              case 7:
+              case 10:
                 res = _context.sent;
                 image_url = res.data.path;
                 payload.image_url = "/" + image_url;
 
-              case 10:
+              case 13:
                 axios__WEBPACK_IMPORTED_MODULE_3___default.a.post("/api/project/".concat(_this.state.project.id, "/comment"), payload).then(function (res) {
                   var id = res.data.id;
 
@@ -1625,7 +1686,7 @@ var SingleProject = /*#__PURE__*/function (_Component) {
                   console.log(err);
                 });
 
-              case 11:
+              case 14:
               case "end":
                 return _context.stop();
             }
@@ -1641,7 +1702,8 @@ var SingleProject = /*#__PURE__*/function (_Component) {
     _this.state = {
       project: {},
       comment: "",
-      images: []
+      images: [],
+      error: ""
     };
     return _this;
   }
@@ -1683,7 +1745,11 @@ var SingleProject = /*#__PURE__*/function (_Component) {
         alt: "image"
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "submit"
-      }, "Submit")) : null, project.comments && project.comments.map(function (comment, i) {
+      }, "Submit"), this.state.error ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        style: {
+          color: "red"
+        }
+      }, this.state.error) : null) : null, project.comments && project.comments.map(function (comment, i) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           key: "c".concat(i),
           style: {
@@ -2028,7 +2094,7 @@ var Routes = /*#__PURE__*/function (_Component) {
           });
         }
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
-        component: _components__WEBPACK_IMPORTED_MODULE_4__["Login"]
+        component: _components__WEBPACK_IMPORTED_MODULE_4__["UserHome"]
       }));
     }
   }]);

@@ -7,7 +7,4 @@ module.exports = db.define('item', {
     unique: true,
     allowNull: false
   },
-  description: {
-    type: Sequelize.TEXT,
-  }
 })

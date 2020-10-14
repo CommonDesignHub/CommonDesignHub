@@ -10,7 +10,8 @@ class SingleProject extends Component {
     this.state = {
       project:{},
       comment:"",
-      images:[]
+      images:[],
+      error:""
     }
   }
 
@@ -38,10 +39,16 @@ class SingleProject extends Component {
   }
 
   submitComment = async (e)=>{
-    e.preventDefault()
     var payload = {
       content: this.state.comment
     }
+
+    if(!this.state.comment){
+      e.preventDefault()
+      this.setState({error:"Please fill out comment text"})
+      return
+    }
+
     if(this.state.images.length){
       const formData = new FormData()
 
@@ -92,6 +99,7 @@ class SingleProject extends Component {
                 alt="image"
               />
               <button type="submit">Submit</button>
+              {this.state.error?<p style={{color:"red"}}>{this.state.error}</p>:null}
             </form>
             :null}
             {project.comments && project.comments.map((comment, i)=>{

@@ -18,7 +18,8 @@ class CreateProject extends Component {
       projectDescription:"",
       alternateDepartmentName:"",
       alternateItemName:"",
-      images:[]
+      images:[],
+      error:"",
     }
   }
 
@@ -35,6 +36,11 @@ class CreateProject extends Component {
       itemId:selectedItemId,
       alternateDepartmentName:alternateDepartmentName,
       alternateItemName:alternateItemName,
+    }
+
+    if(!payload.title || !payload.description || !payload.repoUrl ){
+      this.setState({error: "Title, description and repository url must be filled"})
+      return
     }
 
     if(this.state.images.length){
@@ -175,11 +181,11 @@ class CreateProject extends Component {
           />
           <br/>
           <button type="submit">Submit</button>
+          {this.state.error?<p style={{color:"red"}}>{this.state.error}</p>:null}
           <br/><br/>
           <br/><br/>
 
         </form>
-
       </div>
     )
   }

@@ -11,7 +11,8 @@ class Catalog extends Component {
       item:{},
       projects:[],
       images:[],
-      comment:""
+      comment:"",
+      error:""
     }
   }
 
@@ -26,10 +27,16 @@ class Catalog extends Component {
   }
 
   submitComment = async (e)=>{
-    e.preventDefault()
     var payload = {
       content: this.state.comment
     }
+
+    if(!this.state.comment){
+      e.preventDefault()
+      this.setState({error:"Please fill out comment text"})
+      return
+    }
+
     if(this.state.images.length){
       const formData = new FormData()
 
@@ -120,35 +127,33 @@ class Catalog extends Component {
     var item = this.state.item
     return (
       <React.Fragment>
-        {list.length?<div>
-          {this.state.item.id?(
-            <div>
-              <p>{item.title}</p>
-              <br/>
-              <p>Projects List</p>
-              <div className="project-container">
-                {
-                  list.length
-                  ?list.map(project => (
-                    <div className="project-bar" style={{backgroundColor: project.color, width:"100%"}} key={project.id} id={project.id}>
-                      <div style={{width:"5em"}}>
-                        <div className="vote-btn-container">
-                          <button id={`up${project.id}`} className="upvote" onClick={this.voteProject.bind(this, project.id, 1)}>Up</button>
-                          <button id={`dn${project.id}`} className="downvote" onClick={this.voteProject.bind(this, project.id, -1)}>Dn</button>
-                        </div>
-                        <p>Likes: {project.voteCount}</p>
+        {item.id?<div>
+          <div>
+            <p>{item.title}</p>
+            <br/>
+            <p>Projects List</p>
+            <div className="project-container">
+              {
+                list.length
+                ?list.map(project => (
+                  <div className="project-bar" style={{backgroundColor: project.color, width:"100%"}} key={project.id} id={project.id}>
+                    <div style={{width:"5em"}}>
+                      <div className="vote-btn-container">
+                        <button id={`up${project.id}`} className="upvote" onClick={this.voteProject.bind(this, project.id, 1)}>Up</button>
+                        <button id={`dn${project.id}`} className="downvote" onClick={this.voteProject.bind(this, project.id, -1)}>Dn</button>
                       </div>
-                      <div style={{width:"100%"}}>
-                        <Link to={`/projects/${project.id}`} style={{textAlign:"center", marginRight:"150px"}}>{project.title}</Link>
-                      </div>
-                      <div style= {{display:"inline-flex"}}><img style={{border:"1px solid #ddd", borderRadius:"4px", padding:"5px", width:"100px", margin:"10px"}} src={project.image_url?project.image_url:"/assets/placeholder.png"}></img></div>
+                      <p>Likes: {project.voteCount}</p>
                     </div>
-                  ))
-                  :null
-                }
-              </div>
+                    <div style={{width:"100%"}}>
+                      <Link to={`/projects/${project.id}`} style={{textAlign:"center", marginRight:"150px"}}>{project.title}</Link>
+                    </div>
+                    <div style= {{display:"inline-flex"}}><img style={{border:"1px solid #ddd", borderRadius:"4px", padding:"5px", width:"100px", margin:"10px"}} src={project.image_url?project.image_url:"/assets/placeholder.png"}></img></div>
+                  </div>
+                ))
+                :<p>It appears there are no projects yet.</p>
+              }
             </div>
-          ):null}
+          </div>
           <br/>
           <br/>
           <br/>
@@ -164,6 +169,7 @@ class Catalog extends Component {
               alt="image"
             />
             <button type="submit">Submit</button>
+            {this.state.error?<p style={{color:"red"}}>{this.state.error}</p>:null}
           </form>
           :null}
           <br/>
@@ -175,7 +181,7 @@ class Catalog extends Component {
               {comment.image_url?<img style={{height:"100px", width:"100px"}} src={comment.image_url}></img>:null}
             </div>
           })}
-          </div>:null}
+        </div>:null}
       </React.Fragment>
 
     )
