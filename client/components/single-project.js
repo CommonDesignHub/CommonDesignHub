@@ -94,7 +94,6 @@ class SingleProject extends Component {
               <button type="submit">Submit</button>
             </form>
             :null}
-            {console.log(this.props.user.id)}
             {project.comments && project.comments.map((comment, i)=>{
               return <div key = {`c${i}`} style={{padding:"5px", border:"1px solid black", backgroundColor:"whitesmoke"}}>
                 <p>{comment.user.username}:</p>
